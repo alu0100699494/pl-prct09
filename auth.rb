@@ -1,8 +1,8 @@
 require 'omniauth-oauth2'
 require 'omniauth-google-oauth2'
 
-use OmniAuth::Builder do
-  config = YAML.load_file 'config/config.yml'
+use OmniAuth::Builder do # 
+  config = YAML.load_file 'config/config.yml' # YAML = parecido a JSON, pero con sangrado significativo. Representacion de informacion en forma textual.
   provider :google_oauth2, config['identifier'], config['secret']
 end
 
