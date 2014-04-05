@@ -29,7 +29,7 @@ get '/:selected?' do |selected|
   pp programs
   puts "selected = #{selected}"
   c  = PL0Program.first(:name => selected)
-  source = if c then c.source else "a = 3-2-1" end
+  source = if c then c.source else "a = 3-2-1." end
   erb :index, 
       :locals => { :programs => programs, :source => source }
 end
@@ -64,7 +64,7 @@ post '/save' do
   else
     flash[:notice] = 
       %Q{<div class="error">You are not authenticated.<br />
-         Sign in with Google.
+         Sign in with Google or Facebook.
          </div>}
     redirect back
   end

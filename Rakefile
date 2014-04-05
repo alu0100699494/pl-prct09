@@ -11,6 +11,7 @@ end
 desc "Use the filled client_secrets"
 task :use_keys do
   sh "cp config/config_filled.yml config/config.yml"
+  sh "cp config/config_filledF.yml config/configF.yml"
 end
 
 desc "Go to console.developers.google"
