@@ -8,7 +8,7 @@ function fact (n) {
 }
 %}
 
-%token NUMBER ID E PI EOF
+%token NUMBER ID E PI EOF PROCEDURE CALL CONST VAR BEGIN END WHILE DO ODD IF THEN ELSE
 /* operator associations and precedence */
 
 %right '='
@@ -19,17 +19,22 @@ function fact (n) {
 %left UMINUS
 %left '!'
 
-%start prog
+%start program
 
 %% /* language grammar */
-prog
-    : expressions EOF
-        { 
-          $$ = $1; 
-          console.log($$);
-          return [$$, symbol_table];
-        }
+program
+    : block DOT EOF
+	  {
+	    return block;
+	  }
     ;
+	
+block
+    : ID
+	  {
+	    return [$1];
+	  }
+	;
 
 expressions
     : s  
