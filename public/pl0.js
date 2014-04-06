@@ -74,73 +74,80 @@
 var pl0 = (function(){
 var parser = {trace: function trace() { },
 yy: {},
-symbols_: {"error":2,"program":3,"block":4,"DOT":5,"EOF":6,"ID":7,"expressions":8,"s":9,";":10,"e":11,"=":12,"PI":13,"E":14,"+":15,"-":16,"*":17,"/":18,"^":19,"!":20,"%":21,"(":22,")":23,"NUMBER":24,"$accept":0,"$end":1},
-terminals_: {2:"error",5:"DOT",6:"EOF",7:"ID",10:";",12:"=",13:"PI",14:"E",15:"+",16:"-",17:"*",18:"/",19:"^",20:"!",21:"%",22:"(",23:")",24:"NUMBER"},
-productions_: [0,[3,3],[4,1],[8,1],[8,3],[9,0],[9,1],[11,3],[11,3],[11,3],[11,3],[11,3],[11,3],[11,3],[11,3],[11,2],[11,2],[11,2],[11,3],[11,1],[11,1],[11,1],[11,1]],
+symbols_: {"error":2,"program":3,"block":4,"DOT":5,"EOF":6,"CONST":7,"ID":8,"=":9,"NUMBER":10,"block_const_ids":11,"SEMICOLON":12,"COMMA":13,"expressions":14,"s":15,";":16,"e":17,"PI":18,"E":19,"+":20,"-":21,"*":22,"/":23,"^":24,"!":25,"%":26,"(":27,")":28,"$accept":0,"$end":1},
+terminals_: {2:"error",5:"DOT",6:"EOF",7:"CONST",8:"ID",9:"=",10:"NUMBER",12:"SEMICOLON",13:"COMMA",16:";",18:"PI",19:"E",20:"+",21:"-",22:"*",23:"/",24:"^",25:"!",26:"%",27:"(",28:")"},
+productions_: [0,[3,3],[4,6],[4,0],[11,5],[11,0],[14,1],[14,3],[15,0],[15,1],[17,3],[17,3],[17,3],[17,3],[17,3],[17,3],[17,3],[17,3],[17,2],[17,2],[17,2],[17,3],[17,1],[17,1],[17,1],[17,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
 var $0 = $$.length - 1;
 switch (yystate) {
 case 1:
-	    return block;
+	    return $$[$0-2];
 	  
 break;
 case 2:
-	    return [$$[$0]];
+	    var obj = { type: "CONST", id: $$[$0-4], value: $$[$0-2] };
+		var aux = [obj].concat(aux_vector);
+		
+	    return aux;
 	  
 break;
-case 3: this.$ = (typeof $$[$0] === 'undefined')? [] : [ $$[$0] ]; 
+case 4:
+		  aux_vector.push({ type: "CONST", id: $$[$0-3], value: $$[$0-1] });
+		
 break;
-case 4: this.$ = $$[$0-2];
+case 6: this.$ = (typeof $$[$0] === 'undefined')? [] : [ $$[$0] ]; 
+break;
+case 7: this.$ = $$[$0-2];
           if ($$[$0]) this.$.push($$[$0]); 
           console.log(this.$);
         
 break;
-case 7: symbol_table[$$[$0-2]] = this.$ = $$[$0]; 
+case 10: symbol_table[$$[$0-2]] = this.$ = $$[$0]; 
 break;
-case 8: throw new Error("Can't assign to constant 'π'"); 
+case 11: throw new Error("Can't assign to constant 'π'"); 
 break;
-case 9: throw new Error("Can't assign to math constant 'e'"); 
+case 12: throw new Error("Can't assign to math constant 'e'"); 
 break;
-case 10:this.$ = $$[$0-2]+$$[$0];
+case 13:this.$ = $$[$0-2]+$$[$0];
 break;
-case 11:this.$ = $$[$0-2]-$$[$0];
+case 14:this.$ = $$[$0-2]-$$[$0];
 break;
-case 12:this.$ = $$[$0-2]*$$[$0];
+case 15:this.$ = $$[$0-2]*$$[$0];
 break;
-case 13:
+case 16:
           if ($$[$0] == 0) throw new Error("Division by zero, error!");
           this.$ = $$[$0-2]/$$[$0];
         
 break;
-case 14:this.$ = Math.pow($$[$0-2], $$[$0]);
+case 17:this.$ = Math.pow($$[$0-2], $$[$0]);
 break;
-case 15:
+case 18:
           if ($$[$0-1] % 1 !== 0) 
              throw "Error! Attempt to compute the factorial of "+
                    "a floating point number "+$$[$0-1];
           this.$ = fact($$[$0-1]);
         
 break;
-case 16:this.$ = $$[$0-1]/100;
+case 19:this.$ = $$[$0-1]/100;
 break;
-case 17:this.$ = -$$[$0];
+case 20:this.$ = -$$[$0];
 break;
-case 18:this.$ = $$[$0-1];
+case 21:this.$ = $$[$0-1];
 break;
-case 19:this.$ = Number(yytext);
+case 22:this.$ = Number(yytext);
 break;
-case 20:this.$ = Math.E;
+case 23:this.$ = Math.E;
 break;
-case 21:this.$ = Math.PI;
+case 24:this.$ = Math.PI;
 break;
-case 22: this.$ = symbol_table[yytext] || 0; 
+case 25: this.$ = symbol_table[yytext] || 0; 
 break;
 }
 },
-table: [{3:1,4:2,7:[1,3]},{1:[3]},{5:[1,4]},{5:[2,2]},{6:[1,5]},{1:[2,1]}],
-defaultActions: {3:[2,2],5:[2,1]},
+table: [{3:1,4:2,5:[2,3],7:[1,3]},{1:[3]},{5:[1,4]},{8:[1,5]},{6:[1,6]},{9:[1,7]},{1:[2,1]},{10:[1,8]},{11:9,12:[2,5],13:[1,10]},{12:[1,11]},{8:[1,12]},{5:[2,2]},{9:[1,13]},{10:[1,14]},{11:15,12:[2,5],13:[1,10]},{12:[2,4]}],
+defaultActions: {6:[2,1],11:[2,2],15:[2,4]},
 parseError: function parseError(str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -280,6 +287,8 @@ parse: function parse(input) {
 }};
 
 var symbol_table = {};
+
+var aux_vector = [];
 
 function fact (n) { 
   return n==0 ? 1 : fact(n-1) * n 
@@ -621,22 +630,26 @@ var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
 case 0:/* skip whitespace and comments */
 break;
-case 1:return 24
+case 1:return 12
 break;
-case 2:return idORrw(yy_.yytext)
+case 2:return 5
 break;
-case 3:return yy_.yytext;
+case 3:return 13
 break;
-case 4:return 6
+case 4:return 10
 break;
-case 5:return 5
+case 5:return idORrw(yy_.yytext)
 break;
-case 6:return 'INVALID'
+case 6:return yy_.yytext;
+break;
+case 7:return 6
+break;
+case 8:return 'INVALID'
 break;
 }
 },
-rules: [/^(?:\s+|#.*)/,/^(?:\b\d+(\.\d*)?([eE][-+]?\d+)?\b)/,/^(?:\b[A-Za-z_]\w*\b)/,/^(?:[-*/+^!%=();])/,/^(?:$)/,/^(?:\.)/,/^(?:.)/],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6],"inclusive":true}}
+rules: [/^(?:\s+|#.*)/,/^(?:[;])/,/^(?:\.)/,/^(?:[,])/,/^(?:\b\d+(\.\d*)?([eE][-+]?\d+)?\b)/,/^(?:\b[A-Za-z_]\w*\b)/,/^(?:[-*/+^!%=();])/,/^(?:$)/,/^(?:.)/],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8],"inclusive":true}}
 };
 return lexer;
 })();

@@ -3,6 +3,8 @@
 %{
 var symbol_table = {};
 
+var aux_vector = [];
+
 function fact (n) { 
   return n==0 ? 1 : fact(n-1) * n 
 }
@@ -25,16 +27,25 @@ function fact (n) {
 program
     : block DOT EOF
 	  {
-	    return block;
+	    return $1;
 	  }
     ;
 	
 block
-    : ID
+    : CONST ID '=' NUMBER (block_const_ids) SEMICOLON
 	  {
-	    return [$1];
+		return [{ type: "CONST", id: $2, value: $4 }].concat(aux_vector);
 	  }
+	| /* empty */
 	;
+	
+  block_const_ids
+      : COMMA ID '=' NUMBER block_const_ids
+	    {
+		  aux_vector.push({ type: "CONST", id: $2, value: $4 });
+		}
+	  | /* empty */
+	  ;
 
 expressions
     : s  

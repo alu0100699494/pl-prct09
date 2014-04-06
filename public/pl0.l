@@ -10,11 +10,14 @@ function idORrw(x) {
 %%
 
 \s+|\#.*                         /* skip whitespace and comments */
+[;]                              return 'SEMICOLON'
+\.                               return 'DOT'
+[,]                              return 'COMMA'
+
 \b\d+("."\d*)?([eE][-+]?\d+)?\b  return 'NUMBER'
 \b[A-Za-z_]\w*\b                 return idORrw(yytext)
 [-*/+^!%=();]                    return yytext;
 <<EOF>>                          return 'EOF'
-\.                               return 'DOT'
 .                                return 'INVALID'
 
 
