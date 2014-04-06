@@ -83,18 +83,21 @@ performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* actio
 var $0 = $$.length - 1;
 switch (yystate) {
 case 1:
-	    return $$[$0-2];
+	    header = block_header_stack.pop();
+		
+	    return header;
 	  
 break;
 case 2:
-	    var obj = { type: "CONST", id: $$[$0-4], value: $$[$0-2] };
-		var aux = [obj].concat(aux_vector);
+	    aux_concat = vars_stack;
+		console.log(aux_concat.length);
+		vars_stack = [];
 		
-	    return aux;
+		block_header_stack.push( [{ type: "CONST", id: $$[$0-4], value: $$[$0-2] }].concat(aux_concat) );
 	  
 break;
 case 4:
-		  aux_vector.push({ type: "CONST", id: $$[$0-3], value: $$[$0-1] });
+		   vars_stack.push({ type: "CONST", id: $$[$0-3], value: $$[$0-1] });
 		
 break;
 case 6: this.$ = (typeof $$[$0] === 'undefined')? [] : [ $$[$0] ]; 
@@ -288,7 +291,8 @@ parse: function parse(input) {
 
 var symbol_table = {};
 
-var aux_vector = [];
+var vars_stack = [];
+var block_header_stack = [];
 
 function fact (n) { 
   return n==0 ? 1 : fact(n-1) * n 

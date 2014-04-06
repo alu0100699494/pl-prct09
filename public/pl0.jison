@@ -3,7 +3,8 @@
 %{
 var symbol_table = {};
 
-var aux_vector = [];
+var vars_stack = [];
+var block_header_stack = [];
 
 function fact (n) { 
   return n==0 ? 1 : fact(n-1) * n 
@@ -27,14 +28,20 @@ function fact (n) {
 program
     : block DOT EOF
 	  {
-	    return $1;
+	    header = block_header_stack.pop();
+		
+	    return header;
 	  }
     ;
 	
 block
     : CONST ID '=' NUMBER (block_const_ids) SEMICOLON
 	  {
-		return [{ type: "CONST", id: $2, value: $4 }].concat(aux_vector);
+	    aux_concat = vars_stack;
+		console.log(aux_concat.length);
+		vars_stack = [];
+		
+		block_header_stack.push( [{ type: "CONST", id: $2, value: $4 }].concat(aux_concat) );
 	  }
 	| /* empty */
 	;
@@ -42,7 +49,7 @@ block
   block_const_ids
       : COMMA ID '=' NUMBER block_const_ids
 	    {
-		  aux_vector.push({ type: "CONST", id: $2, value: $4 });
+		   vars_stack.push({ type: "CONST", id: $2, value: $4 });
 		}
 	  | /* empty */
 	  ;
