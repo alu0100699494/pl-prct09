@@ -3,6 +3,7 @@
 %{
 var symbol_table = {};
 
+var consts_stack = [];
 var vars_stack = [];
 var block_header_stack = [];
 
@@ -28,28 +29,57 @@ function fact (n) {
 program
     : block DOT EOF
 	  {
-	    header = block_header_stack.pop();
+	    header1 = block_header_stack.pop();
+		header2 = block_header_stack.pop();
 		
-	    return header;
+		block_header_stack = [];
+		
+		if(header1)
+		  if(header2)
+	        return header1.concat(header2);
+		  else
+		    return header1;
+		else
+		  return [];
 	  }
     ;
 	
 block
-    : CONST ID '=' NUMBER (block_const_ids) SEMICOLON
+    : (block_const)? (block_vars)? /* MEEEEEEEEEEEC Error, no se puede hacer en bison. */
+	| /* empty */
+	;
+	
+  block_const
+      : CONST ID '=' NUMBER (block_const_ids) SEMICOLON
 	  {
-	    aux_concat = vars_stack;
-		console.log(aux_concat.length);
-		vars_stack = [];
+	    aux_concat = consts_stack;
+		consts_stack = [];
 		
 		block_header_stack.push( [{ type: "CONST", id: $2, value: $4 }].concat(aux_concat) );
 	  }
-	| /* empty */
-	;
+	  ;  
 	
   block_const_ids
       : COMMA ID '=' NUMBER block_const_ids
 	    {
-		   vars_stack.push({ type: "CONST", id: $2, value: $4 });
+		   consts_stack.push({ type: "CONST", id: $2, value: $4 });
+		}
+	  | /* empty */
+	  ;
+  block_vars
+      : VAR ID block_vars_id SEMICOLON
+	  {
+	    aux_concat = vars_stack;
+		vars_stack = [];
+		
+		block_header_stack.push( [{ type: "VAR", value: $2 }].concat(aux_concat) );
+	  }
+	  ;
+	  
+  block_vars_id
+      : COMMA ID block_vars_id
+	    {
+		  vars_stack.push({ type: "VAR", value: $2 });
 		}
 	  | /* empty */
 	  ;

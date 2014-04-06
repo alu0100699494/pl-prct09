@@ -74,83 +74,102 @@
 var pl0 = (function(){
 var parser = {trace: function trace() { },
 yy: {},
-symbols_: {"error":2,"program":3,"block":4,"DOT":5,"EOF":6,"CONST":7,"ID":8,"=":9,"NUMBER":10,"block_const_ids":11,"SEMICOLON":12,"COMMA":13,"expressions":14,"s":15,";":16,"e":17,"PI":18,"E":19,"+":20,"-":21,"*":22,"/":23,"^":24,"!":25,"%":26,"(":27,")":28,"$accept":0,"$end":1},
-terminals_: {2:"error",5:"DOT",6:"EOF",7:"CONST",8:"ID",9:"=",10:"NUMBER",12:"SEMICOLON",13:"COMMA",16:";",18:"PI",19:"E",20:"+",21:"-",22:"*",23:"/",24:"^",25:"!",26:"%",27:"(",28:")"},
-productions_: [0,[3,3],[4,6],[4,0],[11,5],[11,0],[14,1],[14,3],[15,0],[15,1],[17,3],[17,3],[17,3],[17,3],[17,3],[17,3],[17,3],[17,3],[17,2],[17,2],[17,2],[17,3],[17,1],[17,1],[17,1],[17,1]],
+symbols_: {"error":2,"program":3,"block":4,"DOT":5,"EOF":6,"block_const":7,"block_vars":8,"CONST":9,"ID":10,"=":11,"NUMBER":12,"block_const_ids":13,"SEMICOLON":14,"COMMA":15,"VAR":16,"block_vars_id":17,"expressions":18,"s":19,";":20,"e":21,"PI":22,"E":23,"+":24,"-":25,"*":26,"/":27,"^":28,"!":29,"%":30,"(":31,")":32,"$accept":0,"$end":1},
+terminals_: {2:"error",5:"DOT",6:"EOF",9:"CONST",10:"ID",11:"=",12:"NUMBER",14:"SEMICOLON",15:"COMMA",16:"VAR",20:";",22:"PI",23:"E",24:"+",25:"-",26:"*",27:"/",28:"^",29:"!",30:"%",31:"(",32:")"},
+productions_: [0,[3,3],[4,2],[4,0],[7,6],[13,5],[13,0],[8,4],[17,3],[17,0],[18,1],[18,3],[19,0],[19,1],[21,3],[21,3],[21,3],[21,3],[21,3],[21,3],[21,3],[21,3],[21,2],[21,2],[21,2],[21,3],[21,1],[21,1],[21,1],[21,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
 var $0 = $$.length - 1;
 switch (yystate) {
 case 1:
-	    header = block_header_stack.pop();
+	    header1 = block_header_stack.pop();
+		header2 = block_header_stack.pop();
 		
-	    return header;
+		block_header_stack = [];
+		
+		if(header1)
+		  if(header2)
+	        return header1.concat(header2);
+		  else
+		    return header1;
+		else
+		  return [];
 	  
 break;
-case 2:
-	    aux_concat = vars_stack;
-		console.log(aux_concat.length);
-		vars_stack = [];
+case 4:
+	    aux_concat = consts_stack;
+		consts_stack = [];
 		
 		block_header_stack.push( [{ type: "CONST", id: $$[$0-4], value: $$[$0-2] }].concat(aux_concat) );
 	  
 break;
-case 4:
-		   vars_stack.push({ type: "CONST", id: $$[$0-3], value: $$[$0-1] });
+case 5:
+		   consts_stack.push({ type: "CONST", id: $$[$0-3], value: $$[$0-1] });
 		
 break;
-case 6: this.$ = (typeof $$[$0] === 'undefined')? [] : [ $$[$0] ]; 
+case 7:
+	    aux_concat = vars_stack;
+		vars_stack = [];
+		
+		block_header_stack.push( [{ type: "VAR", value: $$[$0-2] }].concat(aux_concat) );
+	  
 break;
-case 7: this.$ = $$[$0-2];
+case 8:
+		  vars_stack.push({ type: "VAR", value: $$[$0-1] });
+		
+break;
+case 10: this.$ = (typeof $$[$0] === 'undefined')? [] : [ $$[$0] ]; 
+break;
+case 11: this.$ = $$[$0-2];
           if ($$[$0]) this.$.push($$[$0]); 
           console.log(this.$);
         
 break;
-case 10: symbol_table[$$[$0-2]] = this.$ = $$[$0]; 
+case 14: symbol_table[$$[$0-2]] = this.$ = $$[$0]; 
 break;
-case 11: throw new Error("Can't assign to constant 'π'"); 
+case 15: throw new Error("Can't assign to constant 'π'"); 
 break;
-case 12: throw new Error("Can't assign to math constant 'e'"); 
+case 16: throw new Error("Can't assign to math constant 'e'"); 
 break;
-case 13:this.$ = $$[$0-2]+$$[$0];
+case 17:this.$ = $$[$0-2]+$$[$0];
 break;
-case 14:this.$ = $$[$0-2]-$$[$0];
+case 18:this.$ = $$[$0-2]-$$[$0];
 break;
-case 15:this.$ = $$[$0-2]*$$[$0];
+case 19:this.$ = $$[$0-2]*$$[$0];
 break;
-case 16:
+case 20:
           if ($$[$0] == 0) throw new Error("Division by zero, error!");
           this.$ = $$[$0-2]/$$[$0];
         
 break;
-case 17:this.$ = Math.pow($$[$0-2], $$[$0]);
+case 21:this.$ = Math.pow($$[$0-2], $$[$0]);
 break;
-case 18:
+case 22:
           if ($$[$0-1] % 1 !== 0) 
              throw "Error! Attempt to compute the factorial of "+
                    "a floating point number "+$$[$0-1];
           this.$ = fact($$[$0-1]);
         
 break;
-case 19:this.$ = $$[$0-1]/100;
+case 23:this.$ = $$[$0-1]/100;
 break;
-case 20:this.$ = -$$[$0];
+case 24:this.$ = -$$[$0];
 break;
-case 21:this.$ = $$[$0-1];
+case 25:this.$ = $$[$0-1];
 break;
-case 22:this.$ = Number(yytext);
+case 26:this.$ = Number(yytext);
 break;
-case 23:this.$ = Math.E;
+case 27:this.$ = Math.E;
 break;
-case 24:this.$ = Math.PI;
+case 28:this.$ = Math.PI;
 break;
-case 25: this.$ = symbol_table[yytext] || 0; 
+case 29: this.$ = symbol_table[yytext] || 0; 
 break;
 }
 },
-table: [{3:1,4:2,5:[2,3],7:[1,3]},{1:[3]},{5:[1,4]},{8:[1,5]},{6:[1,6]},{9:[1,7]},{1:[2,1]},{10:[1,8]},{11:9,12:[2,5],13:[1,10]},{12:[1,11]},{8:[1,12]},{5:[2,2]},{9:[1,13]},{10:[1,14]},{11:15,12:[2,5],13:[1,10]},{12:[2,4]}],
-defaultActions: {6:[2,1],11:[2,2],15:[2,4]},
+table: [{3:1,4:2,5:[2,3],7:3,9:[1,4]},{1:[3]},{5:[1,5]},{8:6,16:[1,7]},{10:[1,8]},{6:[1,9]},{5:[2,2]},{10:[1,10]},{11:[1,11]},{1:[2,1]},{14:[2,9],15:[1,13],17:12},{12:[1,14]},{14:[1,15]},{10:[1,16]},{13:17,14:[2,6],15:[1,18]},{5:[2,7]},{14:[2,9],15:[1,13],17:19},{14:[1,20]},{10:[1,21]},{14:[2,8]},{16:[2,4]},{11:[1,22]},{12:[1,23]},{13:24,14:[2,6],15:[1,18]},{14:[2,5]}],
+defaultActions: {6:[2,2],9:[2,1],15:[2,7],19:[2,8],20:[2,4],24:[2,5]},
 parseError: function parseError(str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -291,6 +310,7 @@ parse: function parse(input) {
 
 var symbol_table = {};
 
+var consts_stack = [];
 var vars_stack = [];
 var block_header_stack = [];
 
@@ -634,13 +654,13 @@ var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
 case 0:/* skip whitespace and comments */
 break;
-case 1:return 12
+case 1:return 14
 break;
 case 2:return 5
 break;
-case 3:return 13
+case 3:return 15
 break;
-case 4:return 10
+case 4:return 12
 break;
 case 5:return idORrw(yy_.yytext)
 break;
