@@ -122,6 +122,10 @@ statement
 	  {
 	    $$ = {type: $1, value: [$2].concat($3)};
 	  }
+	| IF condition THEN statement
+	  {
+	    $$ = {type: $1, condition: $2, statement: $4};
+	  }
 	| /* empty */
 	  {
 	    $$ = [];
@@ -141,6 +145,13 @@ statement
 	  ;
 	
 expression
+    : NUMBER /* test */
+	  {
+	    $$ = $1;
+	  }
+	;
+	
+condition
     : NUMBER /* test */
 	  {
 	    $$ = $1;
