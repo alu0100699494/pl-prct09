@@ -59,7 +59,8 @@ block
 		  $$ = [$$];
 		}
 		
-		if($4) $$ = $$.concat($4);
+		if($4)
+		  $$ = $$.concat($4);
 	  }
 	;
 	
@@ -156,18 +157,13 @@ statement
       : SEMICOLON statement statement_begin_st
 	    {
 		  $$ = [$2];
-		  $$ = $$.concat($3)
+		  if($3) $$ = $$.concat($3)
 		}
 	  | /* empty */
 	    {
 		  $$ = [];
 		}
 	  ;
-	
-expression
-    : NUMBER /* test */
-	| ID     /* test */
-	;
 	
 condition
     : ODD expression
@@ -181,92 +177,30 @@ condition
 	;
 	
 expression
-    : term expression_terms
+    : expression '+' expression
 	  {
-	    aux = [];
-	    if($3.length > 0)
-		{
-		  aux = tree($1, $3);
-		}
-		
-	    $$ = aux;
+	    $$ = {type: $2, left: $1, right: $3};
 	  }
-	;
-	
-	// PAUSA AQUí!
-	
-  expression_terms
-      : ('+'|'-') term expression_terms
-	    {
-		  
-		}
-	  | /* empty */
-	    {
-		  $$ = [];
-		}
-	  ;
-	  
-	  
-term
-    : ID
+	| expression '-' expression
+	  {
+	    $$ = {type: $2, left: $1, right: $3};
+	  }
+	| expression '*' expression
+	  {
+	    $$ = {type: $2, left: $1, right: $3};
+	  }
+	| expression '/' expression
+	  {
+	    $$ = {type: $2, left: $1, right: $3};
+	  }
+	| '-' expression %prec UMINUS
+	  {
+	    $$ = {type: $1, value: $2};
+	  }
+	| '(' expression ')'
+	  {
+	    $$ = $2;
+	  }
+	| ID
 	| NUMBER
 	;
-
-expressions
-    : s  
-        { $$ = (typeof $1 === 'undefined')? [] : [ $1 ]; }
-    | expressions ';' s
-        { $$ = $1;
-          if ($3) $$.push($3); 
-          console.log($$);
-        }
-    ;
-
-s
-    : /* empty */
-    | e
-    ;
-
-e
-    : ID '=' e
-        { symbol_table[$1] = $$ = $3; }
-    | PI '=' e 
-        { throw new Error("Can't assign to constant 'π'"); }
-    | E '=' e 
-        { throw new Error("Can't assign to math constant 'e'"); }
-    | e '+' e
-        {$$ = $1+$3;}
-    | e '-' e
-        {$$ = $1-$3;}
-    | e '*' e
-        {$$ = $1*$3;}
-    | e '/' e
-        {
-          if ($3 == 0) throw new Error("Division by zero, error!");
-          $$ = $1/$3;
-        }
-    | e '^' e
-        {$$ = Math.pow($1, $3);}
-    | e '!'
-        {
-          if ($1 % 1 !== 0) 
-             throw "Error! Attempt to compute the factorial of "+
-                   "a floating point number "+$1;
-          $$ = fact($1);
-        }
-    | e '%'
-        {$$ = $1/100;}
-    | '-' e %prec UMINUS
-        {$$ = -$2;}
-    | '(' e ')'
-        {$$ = $2;}
-    | NUMBER
-        {$$ = Number(yytext);}
-    | E
-        {$$ = Math.E;}
-    | PI
-        {$$ = Math.PI;}
-    | ID 
-        { $$ = symbol_table[yytext] || 0; }
-    ;
-
