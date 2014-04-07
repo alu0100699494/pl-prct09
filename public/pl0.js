@@ -74,102 +74,128 @@
 var pl0 = (function(){
 var parser = {trace: function trace() { },
 yy: {},
-symbols_: {"error":2,"program":3,"block":4,"DOT":5,"EOF":6,"block_const":7,"block_vars":8,"CONST":9,"ID":10,"=":11,"NUMBER":12,"block_const_ids":13,"SEMICOLON":14,"COMMA":15,"VAR":16,"block_vars_id":17,"expressions":18,"s":19,";":20,"e":21,"PI":22,"E":23,"+":24,"-":25,"*":26,"/":27,"^":28,"!":29,"%":30,"(":31,")":32,"$accept":0,"$end":1},
-terminals_: {2:"error",5:"DOT",6:"EOF",9:"CONST",10:"ID",11:"=",12:"NUMBER",14:"SEMICOLON",15:"COMMA",16:"VAR",20:";",22:"PI",23:"E",24:"+",25:"-",26:"*",27:"/",28:"^",29:"!",30:"%",31:"(",32:")"},
-productions_: [0,[3,3],[4,2],[4,0],[7,6],[13,5],[13,0],[8,4],[17,3],[17,0],[18,1],[18,3],[19,0],[19,1],[21,3],[21,3],[21,3],[21,3],[21,3],[21,3],[21,3],[21,3],[21,2],[21,2],[21,2],[21,3],[21,1],[21,1],[21,1],[21,1]],
+symbols_: {"error":2,"program":3,"block":4,"DOT":5,"EOF":6,"block_const":7,"block_vars":8,"block_procs":9,"statement":10,"CONST":11,"ID":12,"=":13,"NUMBER":14,"block_const_ids":15,"SEMICOLON":16,"COMMA":17,"VAR":18,"block_vars_id":19,"PROCEDURE":20,"expressions":21,"s":22,";":23,"e":24,"PI":25,"E":26,"+":27,"-":28,"*":29,"/":30,"^":31,"!":32,"%":33,"(":34,")":35,"$accept":0,"$end":1},
+terminals_: {2:"error",5:"DOT",6:"EOF",11:"CONST",12:"ID",13:"=",14:"NUMBER",16:"SEMICOLON",17:"COMMA",18:"VAR",20:"PROCEDURE",23:";",25:"PI",26:"E",27:"+",28:"-",29:"*",30:"/",31:"^",32:"!",33:"%",34:"(",35:")"},
+productions_: [0,[3,3],[4,4],[7,6],[7,0],[15,5],[15,0],[8,4],[8,0],[19,3],[19,0],[9,6],[9,0],[10,0],[21,1],[21,3],[22,0],[22,1],[24,3],[24,3],[24,3],[24,3],[24,3],[24,3],[24,3],[24,3],[24,2],[24,2],[24,2],[24,3],[24,1],[24,1],[24,1],[24,1]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
 var $0 = $$.length - 1;
 switch (yystate) {
 case 1:
-	    header1 = block_header_stack.pop();
-		header2 = block_header_stack.pop();
-		
-		block_header_stack = [];
-		
-		if(header1)
-		  if(header2)
-	        return header1.concat(header2);
-		  else
-		    return header1;
-		else
-		  return [];
+	    return $$[$0-2];
 	  
+break;
+case 2:
+	    this.$ = [];
+		
+		if($$[$0-3]) this.$ = this.$.concat($$[$0-3]);
+		if($$[$0-2]) this.$ = this.$.concat($$[$0-2]);
+		if($$[$0-1]) this.$ = this.$.concat($$[$0-1]);
+		if(this.$.length > 0) this.$ = [this.$];
+		if($$[$0]) this.$ = this.$.concat($$[$0]);
+	  
+break;
+case 3:
+	      this.$ = [{ type: "CONST", id: $$[$0-4], value: $$[$0-2] }];
+		  if($$[$0-1]) this.$ = this.$.concat($$[$0-1]);
+	    
 break;
 case 4:
-	    aux_concat = consts_stack;
-		consts_stack = [];
-		
-		block_header_stack.push( [{ type: "CONST", id: $$[$0-4], value: $$[$0-2] }].concat(aux_concat) );
-	  
+	      this.$ = [];
+	    
 break;
 case 5:
-		   consts_stack.push({ type: "CONST", id: $$[$0-3], value: $$[$0-1] });
+		  this.$ = [{ type: "CONST", id: $$[$0-3], value: $$[$0-1] }];
+		  if($$[$0]) this.$ = this.$.concat($$[$0]);
 		
 break;
-case 7:
-	    aux_concat = vars_stack;
-		vars_stack = [];
-		
-		block_header_stack.push( [{ type: "VAR", value: $$[$0-2] }].concat(aux_concat) );
+case 6:
+	    this.$ = [];
+	  
+break;
+case 7:		
+		this.$ = [{ type: "VAR", value: $$[$0-2] }];
+		if($$[$0-1]) this.$ = this.$.concat($$[$0-1]);
 	  
 break;
 case 8:
-		  vars_stack.push({ type: "VAR", value: $$[$0-1] });
+		  this.$ = [];
 		
 break;
-case 10: this.$ = (typeof $$[$0] === 'undefined')? [] : [ $$[$0] ]; 
+case 9:
+		  this.$ = [{ type: "VAR", value: $$[$0-1] }];
+		  if($$[$0]) this.$ = this.$.concat($$[$0]);
+		
 break;
-case 11: this.$ = $$[$0-2];
+case 10:
+		  this.$ = [];
+		
+break;
+case 11:
+		  this.$ = [{type: "PROCEDURE", id: $$[$0-4], block: $$[$0-2]}];
+		  if($$[$0]) this.$ = this.$.concat($$[$0]);
+		
+break;
+case 12:
+		  this.$ = [];
+		
+break;
+case 13:
+	    this.$ = [];
+	  
+break;
+case 14: this.$ = (typeof $$[$0] === 'undefined')? [] : [ $$[$0] ]; 
+break;
+case 15: this.$ = $$[$0-2];
           if ($$[$0]) this.$.push($$[$0]); 
           console.log(this.$);
         
 break;
-case 14: symbol_table[$$[$0-2]] = this.$ = $$[$0]; 
+case 18: symbol_table[$$[$0-2]] = this.$ = $$[$0]; 
 break;
-case 15: throw new Error("Can't assign to constant 'π'"); 
+case 19: throw new Error("Can't assign to constant 'π'"); 
 break;
-case 16: throw new Error("Can't assign to math constant 'e'"); 
+case 20: throw new Error("Can't assign to math constant 'e'"); 
 break;
-case 17:this.$ = $$[$0-2]+$$[$0];
+case 21:this.$ = $$[$0-2]+$$[$0];
 break;
-case 18:this.$ = $$[$0-2]-$$[$0];
+case 22:this.$ = $$[$0-2]-$$[$0];
 break;
-case 19:this.$ = $$[$0-2]*$$[$0];
+case 23:this.$ = $$[$0-2]*$$[$0];
 break;
-case 20:
+case 24:
           if ($$[$0] == 0) throw new Error("Division by zero, error!");
           this.$ = $$[$0-2]/$$[$0];
         
 break;
-case 21:this.$ = Math.pow($$[$0-2], $$[$0]);
+case 25:this.$ = Math.pow($$[$0-2], $$[$0]);
 break;
-case 22:
+case 26:
           if ($$[$0-1] % 1 !== 0) 
              throw "Error! Attempt to compute the factorial of "+
                    "a floating point number "+$$[$0-1];
           this.$ = fact($$[$0-1]);
         
 break;
-case 23:this.$ = $$[$0-1]/100;
+case 27:this.$ = $$[$0-1]/100;
 break;
-case 24:this.$ = -$$[$0];
+case 28:this.$ = -$$[$0];
 break;
-case 25:this.$ = $$[$0-1];
+case 29:this.$ = $$[$0-1];
 break;
-case 26:this.$ = Number(yytext);
+case 30:this.$ = Number(yytext);
 break;
-case 27:this.$ = Math.E;
+case 31:this.$ = Math.E;
 break;
-case 28:this.$ = Math.PI;
+case 32:this.$ = Math.PI;
 break;
-case 29: this.$ = symbol_table[yytext] || 0; 
+case 33: this.$ = symbol_table[yytext] || 0; 
 break;
 }
 },
-table: [{3:1,4:2,5:[2,3],7:3,9:[1,4]},{1:[3]},{5:[1,5]},{8:6,16:[1,7]},{10:[1,8]},{6:[1,9]},{5:[2,2]},{10:[1,10]},{11:[1,11]},{1:[2,1]},{14:[2,9],15:[1,13],17:12},{12:[1,14]},{14:[1,15]},{10:[1,16]},{13:17,14:[2,6],15:[1,18]},{5:[2,7]},{14:[2,9],15:[1,13],17:19},{14:[1,20]},{10:[1,21]},{14:[2,8]},{16:[2,4]},{11:[1,22]},{12:[1,23]},{13:24,14:[2,6],15:[1,18]},{14:[2,5]}],
-defaultActions: {6:[2,2],9:[2,1],15:[2,7],19:[2,8],20:[2,4],24:[2,5]},
+table: [{3:1,4:2,5:[2,4],7:3,11:[1,4],18:[2,4],20:[2,4]},{1:[3]},{5:[1,5]},{5:[2,8],8:6,16:[2,8],18:[1,7],20:[2,8]},{12:[1,8]},{6:[1,9]},{5:[2,12],9:10,16:[2,12],20:[1,11]},{12:[1,12]},{13:[1,13]},{1:[2,1]},{5:[2,13],10:14,16:[2,13]},{12:[1,15]},{16:[2,10],17:[1,17],19:16},{14:[1,18]},{5:[2,2],16:[2,2]},{16:[1,19]},{16:[1,20]},{12:[1,21]},{15:22,16:[2,6],17:[1,23]},{4:24,7:3,11:[1,4],16:[2,4],18:[2,4],20:[2,4]},{5:[2,7],16:[2,7],20:[2,7]},{16:[2,10],17:[1,17],19:25},{16:[1,26]},{12:[1,27]},{16:[1,28]},{16:[2,9]},{5:[2,3],16:[2,3],18:[2,3],20:[2,3]},{13:[1,29]},{5:[2,12],9:30,16:[2,12],20:[1,11]},{14:[1,31]},{5:[2,11],16:[2,11]},{15:32,16:[2,6],17:[1,23]},{16:[2,5]}],
+defaultActions: {9:[2,1],25:[2,9],32:[2,5]},
 parseError: function parseError(str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -309,10 +335,6 @@ parse: function parse(input) {
 }};
 
 var symbol_table = {};
-
-var consts_stack = [];
-var vars_stack = [];
-var block_header_stack = [];
 
 function fact (n) { 
   return n==0 ? 1 : fact(n-1) * n 
@@ -654,13 +676,13 @@ var YYSTATE=YY_START;
 switch($avoiding_name_collisions) {
 case 0:/* skip whitespace and comments */
 break;
-case 1:return 14
+case 1:return 16
 break;
 case 2:return 5
 break;
-case 3:return 15
+case 3:return 17
 break;
-case 4:return 12
+case 4:return 14
 break;
 case 5:return idORrw(yy_.yytext)
 break;

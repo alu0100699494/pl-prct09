@@ -3,10 +3,6 @@
 %{
 var symbol_table = {};
 
-var consts_stack = [];
-var vars_stack = [];
-var block_header_stack = [];
-
 function fact (n) { 
   return n==0 ? 1 : fact(n-1) * n 
 }
@@ -29,60 +25,91 @@ function fact (n) {
 program
     : block DOT EOF
 	  {
-	    header1 = block_header_stack.pop();
-		header2 = block_header_stack.pop();
-		
-		block_header_stack = [];
-		
-		if(header1)
-		  if(header2)
-	        return header1.concat(header2);
-		  else
-		    return header1;
-		else
-		  return [];
+	    return $1;
 	  }
     ;
-	
+
 block
-    : (block_const)? (block_vars)? /* MEEEEEEEEEEEC Error, no se puede hacer en bison. */
-	| /* empty */
+    : block_const block_vars block_procs statement
+	  {
+	    $$ = [];
+		
+		if($1) $$ = $$.concat($1);
+		if($2) $$ = $$.concat($2);
+		if($3) $$ = $$.concat($3);
+		if($$.length > 0) $$ = [$$];
+		if($4) $$ = $$.concat($4);
+	  }
 	;
 	
   block_const
-      : CONST ID '=' NUMBER (block_const_ids) SEMICOLON
-	  {
-	    aux_concat = consts_stack;
-		consts_stack = [];
-		
-		block_header_stack.push( [{ type: "CONST", id: $2, value: $4 }].concat(aux_concat) );
-	  }
+      : CONST ID '=' NUMBER block_const_ids SEMICOLON
+	    {
+	      $$ = [{ type: "CONST", id: $2, value: $4 }];
+		  if($5) $$ = $$.concat($5);
+	    }
+	  | /* empty */
+	    {
+	      $$ = [];
+	    }
 	  ;  
 	
   block_const_ids
       : COMMA ID '=' NUMBER block_const_ids
 	    {
-		   consts_stack.push({ type: "CONST", id: $2, value: $4 });
+		  $$ = [{ type: "CONST", id: $2, value: $4 }];
+		  if($5) $$ = $$.concat($5);
 		}
 	  | /* empty */
+	  {
+	    $$ = [];
+	  }
 	  ;
+	  
   block_vars
       : VAR ID block_vars_id SEMICOLON
-	  {
-	    aux_concat = vars_stack;
-		vars_stack = [];
-		
-		block_header_stack.push( [{ type: "VAR", value: $2 }].concat(aux_concat) );
+	  {		
+		$$ = [{ type: "VAR", value: $2 }];
+		if($3) $$ = $$.concat($3);
 	  }
+	  | /* empty */
+	    {
+		  $$ = [];
+		}
 	  ;
 	  
   block_vars_id
       : COMMA ID block_vars_id
 	    {
-		  vars_stack.push({ type: "VAR", value: $2 });
+		  $$ = [{ type: "VAR", value: $2 }];
+		  if($3) $$ = $$.concat($3);
 		}
 	  | /* empty */
+	    {
+		  $$ = [];
+		}
 	  ;
+
+
+  block_procs
+      : PROCEDURE ID SEMICOLON block SEMICOLON block_procs
+	    {
+		  $$ = [{type: "PROCEDURE", id: $2, block: $4}];
+		  if($6) $$ = $$.concat($6);
+		}
+	  | /* empty */
+	    {
+		  $$ = [];
+		}
+	  ;
+	  
+
+statement
+    : /* empty */
+	  {
+	    $$ = [];
+	  }
+	;
 
 expressions
     : s  
