@@ -37,7 +37,14 @@ block
 		if($1) $$ = $$.concat($1);
 		if($2) $$ = $$.concat($2);
 		if($3) $$ = $$.concat($3);
-		if($$.length > 0) $$ = [$$];
+		
+		if($$.length > 0)
+		{
+		  console.log("Dentrooooou");
+		  $$ = [$$];
+		  console.log($$);
+		}
+		
 		if($4) $$ = $$.concat($4);
 	  }
 	;
@@ -108,6 +115,10 @@ statement
     : ID '=' expression
 	  {
 	    $$ = {type: '=', left: $1, rigth: $3};
+	  }
+	| CALL ID
+	  {
+	    $$ = {type: 'CALL', id: $2};
 	  }
 	| /* empty */
 	  {
