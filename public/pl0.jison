@@ -40,9 +40,7 @@ block
 		
 		if($$.length > 0)
 		{
-		  console.log("Dentrooooou");
 		  $$ = [$$];
-		  console.log($$);
 		}
 		
 		if($4) $$ = $$.concat($4);
@@ -52,14 +50,14 @@ block
   block_const
       : CONST ID '=' NUMBER block_const_ids SEMICOLON
 	    {
-	      $$ = [{ type: "CONST", id: $2, value: $4 }];
+	      $$ = [{ type: $1, id: $2, value: $4 }];
 		  if($5) $$ = $$.concat($5);
 	    }
 	  | /* empty */
 	    {
 	      $$ = [];
 	    }
-	  ;  
+	  ;
 	
   block_const_ids
       : COMMA ID '=' NUMBER block_const_ids
@@ -76,7 +74,7 @@ block
   block_vars
       : VAR ID block_vars_id SEMICOLON
 	  {		
-		$$ = [{ type: "VAR", value: $2 }];
+		$$ = [{ type: $1, value: $2 }];
 		if($3) $$ = $$.concat($3);
 	  }
 	  | /* empty */
@@ -101,7 +99,7 @@ block
   block_procs
       : PROCEDURE ID SEMICOLON block SEMICOLON block_procs
 	    {
-		  $$ = [{type: "PROCEDURE", id: $2, block: $4}];
+		  $$ = [{type: $1, id: $2, block: $4}];
 		  if($6) $$ = $$.concat($6);
 		}
 	  | /* empty */
@@ -114,17 +112,33 @@ block
 statement
     : ID '=' expression
 	  {
-	    $$ = {type: '=', left: $1, rigth: $3};
+	    $$ = {type: $2, left: $1, rigth: $3};
 	  }
 	| CALL ID
 	  {
-	    $$ = {type: 'CALL', id: $2};
+	    $$ = {type: $1, id: $2};
+	  }
+	| BEGIN statement statement_begin_st END
+	  {
+	    $$ = {type: $1, value: [$2].concat($3)};
 	  }
 	| /* empty */
 	  {
 	    $$ = [];
 	  }
 	;
+	
+  statement_begin_st
+      : SEMICOLON statement statement_begin_st
+	    {
+		  $$ = [$2];
+		  $$ = $$.concat($3)
+		}
+	  | /* empty */
+	    {
+		  $$ = [];
+		}
+	  ;
 	
 expression
     : NUMBER /* test */
