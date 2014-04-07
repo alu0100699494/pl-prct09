@@ -112,7 +112,7 @@ block
 statement
     : ID '=' expression
 	  {
-	    $$ = {type: $2, left: $1, rigth: $3};
+	    $$ = {type: $2, left: $1, right: $3};
 	  }
 	| CALL ID
 	  {
@@ -150,15 +150,17 @@ statement
 	
 expression
     : NUMBER /* test */
-	  {
-	    $$ = $1;
-	  }
+	| ID     /* test */
 	;
 	
 condition
-    : NUMBER /* test */
+    : ODD expression
 	  {
-	    $$ = $1;
+	    $$ = {type: $1, value: $2};
+	  }
+	| expression COMPARISON expression
+	  {
+	    $$ = {type: $2, left: $1, right: $3};
 	  }
 	;
 

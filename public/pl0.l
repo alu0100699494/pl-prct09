@@ -13,7 +13,7 @@ function idORrw(x) {
 [;]                              return 'SEMICOLON'
 \.                               return 'DOT'
 [,]                              return 'COMMA'
-
+('=='|'!='|'<'|'<='|'>'|'>=')    return 'COMPARISON'
 \b\d+("."\d*)?([eE][-+]?\d+)?\b  return 'NUMBER'
 \b[A-Za-z_]\w*\b                 return idORrw(yytext)
 [-*/+^!%=();]                    return yytext;
