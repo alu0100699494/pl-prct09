@@ -172,12 +172,17 @@ case 18:
 	  
 break;
 case 19:
-		  this.$ = [$$[$0-1]];
+		  aux = $$[$0-1];
+		  if(Object.keys(aux).length == 0)
+		    this.$ = [];
+		  else
+		    this.$ = [$$[$0-1]];
+			
 		  if($$[$0]) this.$ = this.$.concat($$[$0])
 		
 break;
 case 20:
-		  this.$ = null
+		  this.$ = [];
 		
 break;
 case 21:

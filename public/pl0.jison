@@ -156,7 +156,13 @@ statement
   statement_begin_st
       : SEMICOLON statement statement_begin_st
 	    {
-		  $$ = [$2];
+		  // Posibles problemas de compatibilidad con IE < 9
+		  aux = $2;
+		  if(Object.keys(aux).length == 0)
+		    $$ = [];
+		  else
+		    $$ = [$2];
+			
 		  if($3) $$ = $$.concat($3)
 		}
 	  | /* empty */
