@@ -105,9 +105,20 @@ block
 	  
 
 statement
-    : /* empty */
+    : ID '=' expression
+	  {
+	    $$ = {type: '=', left: $1, rigth: $3};
+	  }
+	| /* empty */
 	  {
 	    $$ = [];
+	  }
+	;
+	
+expression
+    : NUMBER /* test */
+	  {
+	    $$ = $1;
 	  }
 	;
 
