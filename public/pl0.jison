@@ -6,6 +6,22 @@ var symbol_table = {};
 function fact (n) { 
   return n==0 ? 1 : fact(n-1) * n 
 }
+
+// Reciclada del pegjs
+var tree = function(f, r) {
+  if (r.length > 0) {
+    var last = r.pop();
+    var result = {
+      type:  last[0],
+      left: tree(f, r),
+      right: last[1]
+    };
+  }
+  else {
+    var result = f;
+  }
+  return result;
+}
 %}
 
 %token NUMBER ID E PI EOF PROCEDURE CALL CONST VAR BEGIN END WHILE DO ODD IF THEN ELSE
@@ -162,6 +178,38 @@ condition
 	  {
 	    $$ = {type: $2, left: $1, right: $3};
 	  }
+	;
+	
+expression
+    : term expression_terms
+	  {
+	    aux = [];
+	    if($3.length > 0)
+		{
+		  aux = tree($1, $3);
+		}
+		
+	    $$ = aux;
+	  }
+	;
+	
+	// PAUSA AQUí!
+	
+  expression_terms
+      : ('+'|'-') term expression_terms
+	    {
+		  
+		}
+	  | /* empty */
+	    {
+		  $$ = [];
+		}
+	  ;
+	  
+	  
+term
+    : ID
+	| NUMBER
 	;
 
 expressions
