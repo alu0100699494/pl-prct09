@@ -126,6 +126,10 @@ statement
 	  {
 	    $$ = {type: $1, condition: $2, statement: $4};
 	  }
+	| WHILE condition DO statement
+	  {
+	    $$ = {type: $1, condition: $2, statement: $4};
+	  }
 	| /* empty */
 	  {
 	    $$ = [];
