@@ -1,4 +1,4 @@
-<h1>-----  Calculadora usando Jison  -----</h1>
+<h1>-----  Analizador sintáctico de PL/0 usando Jison  -----</h1>
 <div id="content">
   <p class="loadfile">
     <input type="file" id="examples" />
@@ -15,10 +15,12 @@
     <tr>
       <td>
         <form action="/save" method="post">
+	<!--<div class="textar">-->
           <textarea id="input" name="input" 
                     autofocus cols = "40" rows = "4">
 <%= source %>
           </textarea>
+	<!--</div>-->
           <br/>
           <label for="saveas">Save as</label>
           <input id="saveas" type="text" name="fname" 

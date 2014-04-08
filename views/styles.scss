@@ -8,6 +8,7 @@ $main-font: Helvetica, Arial, sans-serif;
 
 body {
   font-family: $main-font;
+  background-image:url("http://www.cheridegruccio.com/1CreamBackground.jpg")
 }
 
 h1 {
@@ -49,7 +50,7 @@ header h1 {
 }
 
 nav {
-  @include tabs ($background: $black, $color: $white);
+  @include tabs ($background: #AF7817, $color: $white);
   font-weight: bold;
 }
 
@@ -62,7 +63,7 @@ label {
 }
 
 nav a.current {
-  background: lighten($black, 50%);
+  background: lighten(#AF7817, 50%);
 }
 
 .flash {
@@ -89,7 +90,7 @@ nav a.current {
 }
 
 .loadfile {
-  background-color: $black;
+  background-color: #AF7817;
   border-radius: 10px;
   border: 2px dashed #DDD;
   line-height: 80px;
@@ -99,7 +100,7 @@ nav a.current {
   padding: 5px;
 
   button, input {
-    color: $black;
+    color: brown;
     float: left;
     list-style: none;
 
@@ -125,4 +126,31 @@ nav a.current {
 
 .centered {
   text-align: center;
+}
+
+input[type=text] {
+    border: 5px dotted #C68E17;
+    border-radius: 5px;
+    box-shadow: 
+      inset 0 0 8px  rgba(0,0,0,0.1),
+            0 0 16px rgba(0,0,0,0.1); 
+    padding: 5px;
+    background: rgba(255,255,255,0.5);
+    margin: 0 0 10px 0;
+}
+
+.textar {
+  width: 500px;
+  padding: 3px;
+  border-color: brown;
+  border-style: dotted;
+  border-width: thin;
+  border-radius: 5px;
+}
+
+label {
+color: brown;
+font-weight: bold;
+width: 100px;
+padding: 5px;
 }
