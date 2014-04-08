@@ -1,39 +1,16 @@
 /* description: Parses end executes mathematical expressions. */
 
 %{
-var symbol_table = {};
-
-function fact (n) { 
-  return n==0 ? 1 : fact(n-1) * n 
-}
-
-// Reciclada del pegjs
-var tree = function(f, r) {
-  if (r.length > 0) {
-    var last = r.pop();
-    var result = {
-      type:  last[0],
-      left: tree(f, r),
-      right: last[1]
-    };
-  }
-  else {
-    var result = f;
-  }
-  return result;
-}
+// Sin funciones
 %}
 
-%token NUMBER ID E PI EOF PROCEDURE CALL CONST VAR BEGIN END WHILE DO ODD IF THEN ELSE
+%token NUMBER ID EOF PROCEDURE CALL CONST VAR BEGIN END WHILE DO ODD IF THEN ELSE
 /* operator associations and precedence */
 
 %right '='
 %left '+' '-'
 %left '*' '/'
-%left '^'
-%right '%'
 %left UMINUS
-%left '!'
 
 %start program
 
@@ -55,9 +32,7 @@ block
 		if($3) $$ = $$.concat($3);
 		
 		if($$.length > 0)
-		{
 		  $$ = [$$];
-		}
 		
 		if($4)
 		  $$ = $$.concat($4);
