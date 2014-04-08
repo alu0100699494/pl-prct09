@@ -44,5 +44,14 @@
   </div>
 </div>
 
+<!-- Script para el CodeMirror -->
+<script>
+    // Generar un editor CodeMirror a partir del textarea INPUT (se borra y se reemplaza).
+    var editor = CodeMirror.fromTextArea(document.getElementById("input"), {
+      lineNumbers: true,
+      viewportMargin: Infinity
+    });
+</script>
+
 <script type="text/javascript" src="pl0.js"></script>
 <script type="text/javascript" src="main.js"></script>
