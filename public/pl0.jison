@@ -7,6 +7,7 @@
 %token NUMBER ID EOF PROCEDURE CALL CONST VAR BEGIN END WHILE DO ODD IF THEN ELSE
 /* operator associations and precedence */
 
+%right THEN ELSE
 %right '='
 %left '+' '-'
 %left '*' '/'
@@ -117,6 +118,10 @@ statement
 	| IF condition THEN statement
 	  {
 	    $$ = {type: $1, condition: $2, statement: $4};
+	  }
+	| IF condition THEN statement ELSE statement
+	  {
+	    $$ = {type: "IFELSE", condition: $2, statement_true: $4, statement_false: $6};
 	  }
 	| WHILE condition DO statement
 	  {
