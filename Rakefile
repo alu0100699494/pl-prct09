@@ -25,11 +25,11 @@ task :ci, [ :message ] => :keep_secrets do |t, args|
   sh "git ci -am '#{message}'"
 end
 
-task :jison => %w{public/calculator.js} 
+task :jison => %w{public/pl0.js} 
 
 desc "Compile the grammar public/calculator.jison"
-file "public/calculator.js" => %w{public/calculator.jison} do
-  sh "jison public/calculator.jison public/calculator.l -o public/calculator.js"
+file "public/pl0.js" => %w{public/pl0.jison} do
+  sh "jison public/pl0.jison public/pl0.l -o public/pl0.js"
 end
 
 desc "Compile the sass public/styles.scss"
