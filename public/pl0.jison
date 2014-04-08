@@ -104,7 +104,7 @@ block
   block_procs_parameters
       : '(' VAR ID block_procs_parameters_ids ')'
 	    {
-		  $$ = [{type: "PARAMETERS", value: [{type: 'VAR', value: $3}].concat($4)}];
+		  $$ = [{type: 'ID', value: $3}].concat($4);
 		}
 	  | '(' ')'
 	    {
@@ -119,7 +119,7 @@ block
   block_procs_parameters_ids
       : COMMA VAR ID block_procs_parameters_ids
 	    {
-		   $$ = [{type: 'VAR', value: $3}].concat($4);
+		   $$ = [{type: 'ID', value: $3}].concat($4);
 		}
 	  | /* empty */
 	    {
@@ -132,9 +132,9 @@ statement
 	  {
 	    $$ = {type: $2, left: $1, right: $3};
 	  }
-	| CALL ID
+	| CALL ID statement_call_arguments
 	  {
-	    $$ = {type: $1, id: $2};
+	    $$ = {type: $1, id: $2, arguments: $3};
 	  }
 	| BEGIN statement statement_begin_st END
 	  {
@@ -157,6 +157,40 @@ statement
 	    $$ = [];
 	  }
 	;
+	
+  statement_call_arguments
+      : '(' ID statement_call_arguments_ids ')'
+	    {
+		  $$ = [{type: 'ID', value: $2}].concat($3);
+		}
+	  | '(' NUMBER statement_call_arguments_ids ')'
+	    {
+		  $$ = [{type: 'NUMBER', value: $2}].concat($3);
+		}
+	  | '(' ')'
+	    {
+		  $$ = [];
+		}
+	  | /* empty */
+	    {
+		  $$ = [];
+		}
+	  ;
+	  
+  statement_call_arguments_ids
+      : COMMA ID statement_call_arguments_ids
+	    {
+		   $$ = [{type: 'ID', value: $2}].concat($3);
+		}
+	  | COMMA NUMBER statement_call_arguments_ids
+	    {
+		  $$ = [{type: 'NUMBER', value: $2}].concat($3);
+		}
+	  | /* empty */
+	    {
+		  $$ = [];
+		}
+	  ;
 	
   statement_begin_st
       : SEMICOLON statement statement_begin_st
