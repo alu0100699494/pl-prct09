@@ -29,6 +29,8 @@ header h1 {
     margin: 0;
     padding: 0;
     background: $background;
+    border-radius: 10px;
+    border: 2px dashed #DDD;
     overflow: hidden;
   }
   li {
@@ -87,9 +89,9 @@ nav a.current {
 }
 
 .loadfile {
-  background-color: $white;
+  background-color: $black;
   border-radius: 10px;
-  border: 2px solid #DDD;
+  border: 2px dashed #DDD;
   line-height: 80px;
   
   //width: 75%;

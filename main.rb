@@ -17,8 +17,14 @@ helpers do
   end
 end
 
+get('/styles.css'){ scss :styles }
+
 get '/grammar' do
   erb :grammar
+end
+
+get '/test' do
+  erb :test
 end
 
 get '/:selected?' do |selected|
