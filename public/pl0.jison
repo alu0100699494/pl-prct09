@@ -90,10 +90,10 @@ block
 
 
   block_procs
-      : PROCEDURE ID SEMICOLON block SEMICOLON block_procs
+      : PROCEDURE ID block_procs_parameters SEMICOLON block SEMICOLON block_procs
 	    {
-		  $$ = [{type: $1, id: $2, block: $4}];
-		  if($6) $$ = $$.concat($6);
+		  $$ = [{type: $1, id: $2, parameters: $3, block: $5}];
+		  if($7) $$ = $$.concat($7);
 		}
 	  | /* empty */
 	    {
@@ -101,7 +101,32 @@ block
 		}
 	  ;
 	  
+  block_procs_parameters
+      : '(' VAR ID block_procs_parameters_ids ')'
+	    {
+		  $$ = [{type: "PARAMETERS", value: [{type: 'VAR', value: $3}].concat($4)}];
+		}
+	  | '(' ')'
+	    {
+		  $$ = [];
+		}
+	  | /* empty */
+	    {
+		  $$ = [];
+		}
+	  ;
 
+  block_procs_parameters_ids
+      : COMMA VAR ID block_procs_parameters_ids
+	    {
+		   $$ = [{type: 'VAR', value: $3}].concat($4);
+		}
+	  | /* empty */
+	    {
+		  $$ = [];
+		}
+	  ;
+		
 statement
     : ID '=' expression
 	  {
