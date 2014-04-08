@@ -44,7 +44,7 @@ header h1 {
     background: $background;
     color: $color;
     &:hover {
-      background-color: $blue; //darken($background, 90%);
+      background-color: #7C5852;
     }
   }
 }
