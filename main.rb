@@ -8,7 +8,7 @@ require 'pp'
 
 enable :sessions
 set :session_secret, '*&(^#234)'
-set :reserved_words, %w{grammar test login auth}
+set :reserved_words, %w{grammar test login auth logout}
 set :max_files, 10        # no more than max_files+1 will be saved
 
 helpers do
@@ -27,13 +27,23 @@ get '/test' do
   erb :test
 end
 
+get '/logout' do
+  # Si está autenticado, desautenticar
+  if session[:auth]
+    session[:auth] = nil;
+  end
+  puts "Atras!"
+  
+  redirect back
+end
+
 get '/:selected?' do |selected|
-  puts "*************@auth*****************"
-  puts session[:name]
-  pp session[:auth]
+  #puts "*************@auth*****************"
+  #puts session[:name]
+  #pp session[:auth]
   programs = PL0Program.all
-  pp programs
-  puts "selected = #{selected}"
+  #pp programs
+  #puts "selected = #{selected}"
   c  = PL0Program.first(:name => selected)
   source = if c then c.source else "a = 3-2-1." end
   erb :index, 
@@ -64,7 +74,7 @@ post '/save' do
       end
       flash[:notice] = 
         %Q{<div class="notice bg-cyan fg-white marker-on-top">Fichero guardado como "#{c.name}" por "#{session[:name]}".</div>}
-      pp c
+      #pp c
       redirect to '/'+name
     end
   else

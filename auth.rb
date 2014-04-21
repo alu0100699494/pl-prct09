@@ -14,6 +14,8 @@ get '/auth/:name/callback' do
   session[:auth] = @auth = request.env['omniauth.auth']
   session[:name] = @auth['info'].name
   session[:image] = @auth['info'].image
+  session[:url] = @auth['info'].urls.values[0]
+  
   puts "params = #{params}"
   puts "@auth.class = #{@auth.class}"
   puts "@auth info = #{@auth['info']}"
@@ -21,7 +23,6 @@ get '/auth/:name/callback' do
   puts "@auth info name = #{@auth['info'].name}"
   puts "@auth info email = #{@auth['info'].email}"
   puts "-------------@auth----------------------------------"
-  PP.pp @auth
   puts "*************@auth.methods*****************"
   PP.pp @auth.methods.sort
   flash[:notice] = 
