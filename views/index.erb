@@ -1,4 +1,18 @@
-<h1>-----  Analizador sintáctico de PL/0 usando Jison  -----</h1>
+<div class="grid">
+    <div class="row">
+      <div class="span10 offset1"> <h1>Analizador sintáctico de PL/0</h1></div>
+    </div>
+    <div class="row">
+      <div class="span10 offset1"> <p class="loadfile"> <input type="file" id="examples" /> </p> <div class="span10 offset1"> 
+    </div>
+    <div class="row">
+      <div class="span1">
+        <% programs.sort.each do |p, index| %>
+          <div class="span1"> <a href="<%= p.name %>" <%=current?("/"+p.name) %> > <%= p.name %> </a> </div>
+        <% end %>
+    </div>
+</div>
+
 <div id="content">
   <p class="loadfile">
     <input type="file" id="examples" />
@@ -6,8 +20,8 @@
   <p>
   <nav>
   <ul>
-    <% programs.sort.each do |p| %>
-      <li><a href="<%= p.name %>" <%=current?('/'+p.name)%>><%= p.name %></a></li>
+    <% programs.sort.each do |p, index| %>
+      <li><a href="<%= p.name %>" <%=current?("/"+p.name) %> > <%= p.name %> </a></li>
     <% end %>
   </ul>
   </nav>
@@ -30,7 +44,7 @@
   <p>
     <div id="flash"><%= flash[:notice] if flash[:notice]%></div>
   </p>
-  <div class="output"><!-- Output goes here! --> 
+  <div class="output">
 <pre>
 <span id="output">
 </span>
@@ -38,7 +52,6 @@
   </div>
 </div>
 
-<!-- Script para el CodeMirror -->
 <script>
     // Generar un editor CodeMirror a partir del textarea INPUT (se borra y se reemplaza).
     var editor = CodeMirror.fromTextArea(document.getElementById("input"), {
@@ -49,3 +62,4 @@
 
 <script type="text/javascript" src="pl0.js"></script>
 <script type="text/javascript" src="main.js"></script>
+-->

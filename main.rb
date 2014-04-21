@@ -43,12 +43,12 @@ end
 post '/save' do
   pp params
   name = params[:fname]
-  if session[:auth] # authenticated
-    if settings.reserved_words.include? name  # check it on the client side
-      flash[:notice] = 
-        %Q{<div class="error">Can't save file with name '#{name}'.</div>}
-      redirect back
-    else 
+#  if session[:auth] # authenticated
+#    if settings.reserved_words.include? name  # check it on the client side
+#      flash[:notice] = 
+#        %Q{<div class="error">Can't save file with name '#{name}'.</div>}
+#      redirect back
+#    else 
       c  = PL0Program.first(:name => name)
       if c
         c.source = params["input"]
@@ -66,12 +66,12 @@ post '/save' do
         %Q{<div class="success">File saved as #{c.name} by #{session[:name]}.</div>}
       pp c
       redirect to '/'+name
-    end
-  else
-    flash[:notice] = 
-      %Q{<div class="error">You are not authenticated.<br />
-         Sign in with Google or Facebook.
-         </div>}
-    redirect back
-  end
+#    end
+#  else
+#    flash[:notice] = 
+#      %Q{<div class="error">You are not authenticated.<br />
+#         Sign in with Google or Facebook.
+#         </div>}
+#    redirect back
+#  end
 end

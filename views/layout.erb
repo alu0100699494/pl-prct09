@@ -3,40 +3,41 @@
   <head>
     <meta charset="utf-8">
     <title>Práctica 08</title>
-	
+  
     <link rel="icon" type="image/jpg" href="favicon.jpg" />
-	<link href="css/iconFont.min.css" rel="stylesheet">
-	
-	<script src="js/jquery.min.js"></script>
-	<script src="js/jquery-ui-1.9.2.min.js"></script>
-	
+  <link href="css/iconFont.min.css" rel="stylesheet">
+  
+  <script src="js/jquery.min.js"></script>
+  <script src="js/jquery-ui-1.9.2.min.js"></script>
+  
     <script src="js/metro.min.js"></script>
-	
+  
     <script src="lib/codemirror.js"></script>
     <script src="mode/pl0/pl0.js"></script>
-	
-	<link rel="stylesheet" href="lib/codemirror.css">
-	<link rel="stylesheet" href="css/metro-bootstrap.css">
+  
+  <link rel="stylesheet" href="lib/codemirror.css">
+  <link rel="stylesheet" href="css/metro-bootstrap.css">
   </head>
   <body class="metro">
-    <nav class="navigation-bar">
-	  <nav class="navigation-bar-content">
-		<a class="element brand" href="/"  title="Home" <%=current?("/")%>>Home</a>
-		<a class="element brand" href="/grammar"  title="Grammar" <%=current?("/grammar")%>>Gramática</a>
-		<a class="element brand" href="/test" title="Pruebas" <%=current?("/test")%>>Pruebas</a>
-		<span class="element-divider"></span>
-		<a class="element brand" href="https://github.com/alu0100699494/pl-prct08" title="Repo">Repositorio GitHub <span class="icon-github-2"></span></a>
-		
-		<div class="element place-right">
+    <header>
+      <nav class="navigation-bar">
+        <nav class="navigation-bar-content">
+          <a class="element brand" href="/"  title="Home" <%=current?("/")%>>Home</a>
+          <a class="element brand" href="/grammar"  title="Grammar" <%=current?("/grammar")%>>Gramática</a>
+          <a class="element brand" href="/test" title="Pruebas" <%=current?("/test")%>>Pruebas</a>
+          <span class="element-divider"></span>
+          <a class="element brand" href="https://github.com/alu0100699494/pl-prct08" title="Repo">Repositorio GitHub <span class="icon-github-2"></span></a>
+          
+          <div class="element place-right">
             <a class="dropdown-toggle" href="#">Sign in</a>
             <ul class="dropdown-menu  place-right" data-role="dropdown">
                 <li><a href="/auth/google_oauth2"  title="Google" <%=current?("/auth/google_oauth2")%>>Google <span class="icon-google-plus"></a> </li>
                 <li><a href="/auth/facebook"  title="Facebook" <%=current?("/auth/facebook")%>>Facebook <span class="icon-facebook"></span></a> </li>
             </ul>
-        </div>
-	  </nav>
-	</nav>
-	
+          </div>
+      </nav>
+    </nav>
+  </header>
     <%= yield %>
   </body>
 </html>
