@@ -7,7 +7,7 @@ $(document).ready(function() {
       var result = pl0.parse(source);
       $('#output').html(JSON.stringify(result,undefined,2));
     } catch (e) {
-      $('#output').html('<div class="error"><pre>\n' + String(e) + '\n</pre></div>');
+      $('#output').html('<div class="bg-darkRed fg-white"><pre>\n' + String(e) + '\n</pre></div>');
     }
   });
 
