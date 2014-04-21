@@ -13,7 +13,7 @@ set :max_files, 3        # no more than max_files+1 will be saved
 
 helpers do
   def current?(path='/')
-    (request.path==path || request.path==path+'/') ? 'class = "current"' : ''
+    (request.path==path || request.path==path+'/') ? 'active' : ''
   end
 end
 

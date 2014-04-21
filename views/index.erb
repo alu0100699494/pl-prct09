@@ -3,28 +3,32 @@
       <div class="span10 offset1"> <h1>Analizador sintáctico de PL/0</h1></div>
     </div>
     <div class="row">
-      <div class="span10 offset1"> <p class="loadfile"> <input type="file" id="examples" /> </p> <div class="span10 offset1"> 
+      <div class="span10 offset1"> <p class="loadfile"> <input type="file" id="examples" /> </p> </div>  
     </div>
     <div class="row">
-      <div class="span1">
-        <% programs.sort.each do |p, index| %>
-          <div class="span1"> <a href="<%= p.name %>" <%=current?("/"+p.name) %> > <%= p.name %> </a> </div>
-        <% end %>
+      <div class="span10 offset1">
+        <div class="button-set">
+          <% programs.sort.each do |p, index| %>
+          <button class="<%=current?("/"+p.name) %>"><a href="<%= p.name %>" > <%= p.name %> </a></button>
+          <% end %>
+        </div>
+      </div> 
     </div>
+    <div class="row">
+      <div class="span10 offset1">
+        <div class="button-set">
+          <% programs.sort.each do |p, index| %>
+          <button class="<%=current?("/"+p.name) %>"><a href="<%= p.name %>" > <%= p.name %> </a></button>
+          <% end %>
+        </div>
+      </div> 
+    </div>
+
 </div>
 
 <div id="content">
-  <p class="loadfile">
-    <input type="file" id="examples" />
-  </p>
-  <p>
-  <nav>
-  <ul>
-    <% programs.sort.each do |p, index| %>
-      <li><a href="<%= p.name %>" <%=current?("/"+p.name) %> > <%= p.name %> </a></li>
-    <% end %>
-  </ul>
-  </nav>
+
+
   <table>
     <tr>
       <td>
