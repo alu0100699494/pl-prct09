@@ -1,68 +1,67 @@
 <div class="grid">
+  <div class="row">
+    <div class="span10 offset1"> <h1>Analizador sintáctico de PL/0</h1></div>
+  </div>
+  
+  <div class="row">
+    <!--<div class="span10 offset1"> <p class="loadfile"> <input type="file" id="examples" /> </p> </div>  -->
+    <div class="span7 offset1">
+      Cargar fichero <strong>PL/0</strong> <div class="input-control file"> <input type="file" id="examples" /> <button class="btn-file"></button> </div>
+    </div> 
+  </div>
+  
+  <div class="row">
+    <div class="span10 offset1">
+      <div class="button-set">
+        <% programs.sort.each do |p, index| %>
+        <button class="<%=current?("/"+p.name) %>"><a href="<%= p.name %>" > <%= p.name %> </a></button>
+        <% end %>
+      </div>
+    </div> 
+  </div>
+  
+  <form action="/save" method="post">
     <div class="row">
-      <div class="span10 offset1"> <h1>Analizador sintáctico de PL/0</h1></div>
-    </div>
-    
-    <div class="row">
-      <!--<div class="span10 offset1"> <p class="loadfile"> <input type="file" id="examples" /> </p> </div>  -->
-      <div class="span7 offset1">
-        Cargar fichero <strong>PL/0</strong> <div class="input-control file"> <input type="file" id="examples" /> <button class="btn-file"></button> </div>
-      </div> 
-    </div>
-    
-    <div class="row">
-      <div class="span10 offset1">
-        <div class="button-set">
-          <% programs.sort.each do |p, index| %>
-          <button class="<%=current?("/"+p.name) %>"><a href="<%= p.name %>" > <%= p.name %> </a></button>
-          <% end %>
-        </div>
-      </div> 
-    </div>
-    
-    <form action="/save" method="post">
-      <div class="row">
-        <div class="span10 offset1"> 
-            <textarea id="input" name="input"  autofocus cols = "40" rows = "4">
+      <div class="span10 offset1"> 
+          <textarea id="input" name="input"  autofocus cols = "40" rows = "4">
 <%= source %>
-            </textarea>
-        </div>
+          </textarea>
       </div>
-      
-      <div class="row">
-        <div class="span2 offset1"> 
-          <button id="parse" type="button" class="success">Parsear entrada</button>
-        </div> 
-      
-        <div class="span2 offset3"> 
-          Guardar fichero como
-        </div>
-        
-        <div class="span2"> 
-          <input id="saveas" type="text" name="fname" title="Un identificador (que no sea la palabra 'test')" pattern="^(?!test$)\w+$" />
-        </div>
-      </div>
-    </form>
+    </div>
     
-      <div class="row">
-        <div class="span5 offset6"> 
-          <div id="flash"><%= flash[:notice] if flash[:notice]%></div>
-        </div>
-      </div>
-
     <div class="row">
-      <div class="span10 offset1">
-        <div class="panel">
-          <div class="panel-header bg-lightBlue fg-white">
-            Árbol AST generado
-          </div>
-        <div class="panel-content">
-          <pre><span id="output">&lt;Vacío&gt;</span></pre>
-        </div>
+      <div class="span2 offset1"> 
+        <button id="parse" type="button" class="success">Parsear entrada</button>
+      </div> 
+    
+      <div class="span2 offset3"> 
+        Guardar fichero como
       </div>
+      
+      <div class="span2"> 
+        <input id="saveas" type="text" name="fname" title="Un identificador (que no sea la palabra 'test')" pattern="^(?!test$)\w+$" />
+      </div>
+    </div>
+  </form>
+  
+    <div class="row">
+      <div class="span5 offset6"> 
+        <div id="flash"><%= flash[:notice] if flash[:notice]%></div>
       </div>
     </div>
 
+  <div class="row">
+    <div class="span10 offset1">
+      <div class="panel">
+        <div class="panel-header bg-lightBlue fg-white">
+          Árbol AST generado
+        </div>
+      <div class="panel-content">
+        <pre><span id="output">&lt;Vacío&gt;</span></pre>
+      </div>
+    </div>
+    </div>
+  </div>
 </div>
 
 <script>
