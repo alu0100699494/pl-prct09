@@ -43,12 +43,12 @@ end
 post '/save' do
   #pp params
   name = params[:fname]
-#  if session[:auth] # authenticated
-#    if settings.reserved_words.include? name  # check it on the client side
-#      flash[:notice] = 
-#        %Q{<div class="notice bg-darkRed fg-white marker-on-top">No se puede guardar el fichero de nombre '#{name}'.</div>}
-#      redirect back
-#    else 
+  if session[:auth] # authenticated
+    if settings.reserved_words.include? name  # check it on the client side
+      flash[:notice] = 
+        %Q{<div class="notice bg-darkRed fg-white marker-on-top">No se puede guardar el fichero de nombre '#{name}'.</div>}
+      redirect back
+    else 
       c  = PL0Program.first(:name => name)
       if c
         c.source = params["input"]
@@ -66,12 +66,12 @@ post '/save' do
         %Q{<div class="notice bg-cyan fg-white marker-on-top">Fichero guardado como "#{c.name}" por "#{session[:name]}".</div>}
 #      pp c
       redirect to '/'+name
-#    end
-#  else
-#    flash[:notice] = 
-#      %Q{<div class="notice bg-darkRed fg-white marker-on-top">No está autenticado.<br />
-#         Inicie sesión con Google o con Facebook.
-#         </div>}
-#    redirect back
-#  end
+    end
+  else
+    flash[:notice] = 
+      %Q{<div class="notice bg-darkRed fg-white marker-on-top">No está autenticado.<br />
+         Inicie sesión con Google o con Facebook.
+         </div>}
+    redirect back
+  end
 end
