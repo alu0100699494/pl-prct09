@@ -64,13 +64,6 @@
   </div>
 </div>
 
-<% if session[:auth] %>
-
-Nombre: <%= session[:name] %>
-Image: <%= session[:name] %>
-
-<% end %>
-
 <script>
     // Generar un editor CodeMirror a partir del textarea INPUT (se borra y se reemplaza).
     var editor = CodeMirror.fromTextArea(document.getElementById("input"), {
