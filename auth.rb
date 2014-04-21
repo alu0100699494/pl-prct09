@@ -19,16 +19,17 @@ get '/auth/:name/callback' do
   puts "@auth info class = #{@auth['info'].class}"
   puts "@auth info name = #{@auth['info'].name}"
   puts "@auth info email = #{@auth['info'].email}"
-  #puts "-------------@auth----------------------------------"
-  #PP.pp @auth
-  #puts "*************@auth.methods*****************"
-  #PP.pp @auth.methods.sort
+  puts "-------------@auth----------------------------------"
+  PP.pp @auth
+  puts "*************@auth.methods*****************"
+  PP.pp @auth.methods.sort
   flash[:notice] = 
-        %Q{<div class="success">Authenticated as #{@auth['info'].name}.</div>}
+        %Q{<div class="notice bg-lime fg-white marker-on-top">Authenticated as #{@auth['info'].name}.</div>}
   redirect '/'
 end
 
 get '/auth/failure' do
-  flash[:notice] = params[:message] 
+  flash[:notice] = 
+        %Q{<div class="notice bg-darkRed fg-white marker-on-top">Error: #{params[:message]}.</div>}
   redirect '/'
 end

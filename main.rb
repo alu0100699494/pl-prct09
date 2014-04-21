@@ -28,12 +28,12 @@ get '/test' do
 end
 
 get '/:selected?' do |selected|
-  #puts "*************@auth*****************"
-  #puts session[:name]
-  #pp session[:auth]
+  puts "*************@auth*****************"
+  puts session[:name]
+  pp session[:auth]
   programs = PL0Program.all
-  #pp programs
-  #puts "selected = #{selected}"
+  pp programs
+  puts "selected = #{selected}"
   c  = PL0Program.first(:name => selected)
   source = if c then c.source else "a = 3-2-1." end
   erb :index, 
@@ -41,7 +41,7 @@ get '/:selected?' do |selected|
 end
 
 post '/save' do
-  #pp params
+  pp params
   name = params[:fname]
   if session[:auth] # authenticated
     if settings.reserved_words.include? name  # check it on the client side
@@ -64,7 +64,7 @@ post '/save' do
       end
       flash[:notice] = 
         %Q{<div class="notice bg-cyan fg-white marker-on-top">Fichero guardado como "#{c.name}" por "#{session[:name]}".</div>}
-#      pp c
+      pp c
       redirect to '/'+name
     end
   else
