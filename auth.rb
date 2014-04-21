@@ -4,7 +4,7 @@ require 'omniauth-facebook'
 
 use OmniAuth::Builder do # 
   config = YAML.load_file 'config/config.yml' # YAML = parecido a JSON, pero con sangrado significativo. Representacion de informacion en forma textual.
-  provider :google_oauth2, config['identifier'], config['secret'], :scope => "userinfo.email,userinfo.profile"
+  provider :google_oauth2, config['identifier'], config['secret'], :scope => "userinfo.email,userinfo.profile", :provider_ignores_state => true
   
   config = YAML.load_file 'config/configF.yml'
   provider :facebook, config['identifier'], config['secret']
