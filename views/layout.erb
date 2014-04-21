@@ -35,8 +35,8 @@
             </div>
             <span class="element-divider"></span>
             <button class="element image-button image-left place-right">
-              <a href="<%= session[:url] %>"><%= session[:name] %></a>
-              <img src="<%= session[:image] %>">
+              <a href="<%= session[:url] %>" target="_blank"><%= session[:name] %></a>
+              <img src="<%= session[:image] %>">  
             </button>
           <!-- Si no, poner el menú de autenticación -->
           <% else %>

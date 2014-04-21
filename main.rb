@@ -29,8 +29,9 @@ get '/logout' do
   # Si está autenticado, desautenticar
   if session[:auth]
     session[:auth] = nil;
+    flash[:notice] = 
+      %Q{<div class="notice bg-lime fg-white marker-on-top">Se ha cerrado sesión correctamente.</div>}
   end
-  puts "Atras!"
   
   redirect back
 end
