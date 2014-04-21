@@ -9,7 +9,7 @@ require 'pp'
 enable :sessions
 set :session_secret, '*&(^#234)'
 set :reserved_words, %w{grammar test login auth}
-set :max_files, 3        # no more than max_files+1 will be saved
+set :max_files, 10        # no more than max_files+1 will be saved
 
 helpers do
   def current?(path='/')
@@ -28,12 +28,12 @@ get '/test' do
 end
 
 get '/:selected?' do |selected|
-  puts "*************@auth*****************"
-  puts session[:name]
-  pp session[:auth]
+  #puts "*************@auth*****************"
+  #puts session[:name]
+  #pp session[:auth]
   programs = PL0Program.all
-  pp programs
-  puts "selected = #{selected}"
+  #pp programs
+  #puts "selected = #{selected}"
   c  = PL0Program.first(:name => selected)
   source = if c then c.source else "a = 3-2-1." end
   erb :index, 
@@ -41,12 +41,12 @@ get '/:selected?' do |selected|
 end
 
 post '/save' do
-  pp params
+  #pp params
   name = params[:fname]
 #  if session[:auth] # authenticated
 #    if settings.reserved_words.include? name  # check it on the client side
 #      flash[:notice] = 
-#        %Q{<div class="error">Can't save file with name '#{name}'.</div>}
+#        %Q{<div class="notice bg-darkRed fg-white marker-on-top">No se puede guardar el fichero de nombre '#{name}'.</div>}
 #      redirect back
 #    else 
       c  = PL0Program.first(:name => name)
@@ -63,14 +63,14 @@ post '/save' do
           :source => params["input"])
       end
       flash[:notice] = 
-        %Q{<div class="success">File saved as #{c.name} by #{session[:name]}.</div>}
-      pp c
+        %Q{<div class="notice bg-cyan fg-white marker-on-top">Fichero guardado como "#{c.name}" por "#{session[:name]}".</div>}
+#      pp c
       redirect to '/'+name
 #    end
 #  else
 #    flash[:notice] = 
-#      %Q{<div class="error">You are not authenticated.<br />
-#         Sign in with Google or Facebook.
+#      %Q{<div class="notice bg-darkRed fg-white marker-on-top">No está autenticado.<br />
+#         Inicie sesión con Google o con Facebook.
 #         </div>}
 #    redirect back
 #  end
