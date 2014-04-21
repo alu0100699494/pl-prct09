@@ -1,32 +1,42 @@
 <!DOCTYPE HTML>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="utf-8">
-    <title>jison</title>
-    <link rel="icon" type="image/jpg" href="favicon.jpg" />
-    <link rel="stylesheet" href="/styles.css" type="text/css" media="screen" charset="utf-8" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <title>Práctica 08</title>
 	
-	<link rel="stylesheet" href="lib/codemirror.css">
+    <link rel="icon" type="image/jpg" href="favicon.jpg" />
+	<link href="css/iconFont.min.css" rel="stylesheet">
+	
+	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery-ui-1.9.2.min.js"></script>
+	
+    <script src="js/metro.min.js"></script>
+	
     <script src="lib/codemirror.js"></script>
     <script src="mode/pl0/pl0.js"></script>
+	
+	<link rel="stylesheet" href="lib/codemirror.css">
+	<link rel="stylesheet" href="css/metro-bootstrap.css">
   </head>
-  <body>
-    <nav>
-      <ul>
-        <li> <a href="/grammar"  title="Grammar" <%=current?("/grammar")%>>Grammar</a> </li>
-        <li> <a href="/"  title="Home" <%=current?("/")%>>Home</a> </li>
-        <li> <a href="/test"  title="Pruebas" <%=current?("/test")%>>Pruebas</a> </li>
-        <li> <a href="/auth/google_oauth2"  title="Google" <%=current?("/auth/google_oauth2")%>>Sign in with Google</a> </li>
-	<li> <a href="/auth/facebook"  title="Facebook" <%=current?("/auth/facebook")%>>Sign in with Facebook</a> </li>
-        <li> <a href="https://github.com/alu0100693096/jisoncalc"  title="Repo">Repo</a> </li>
-        <li> <a href="http://en.wikipedia.org/wiki/Recursive_descent_parser#Example_parser"   title="Wikipedia">PL0</a> </li>
-        <li> <a href="http://zaach.github.io/jison/"  title="Jison">Jison</a> </li>
-        <li> <a href="http://intridea.github.io/omniauth/"  title="Omniauth">Intridea Omniauth</a> </li>
-        <li> <a href="https://console.developers.google.com/project"  title="Google Developers Console">Google Developers Console</a> </li>
-        <li> <a href="https://github.com/SFEley/sinatra-flash"  title="sinatra-flash">sinatra-flash</a> </li>
-      </ul>
-    </nav>
+  <body class="metro">
+    <nav class="navigation-bar">
+	  <nav class="navigation-bar-content">
+		<a class="element brand" href="/"  title="Home" <%=current?("/")%>>Home</a>
+		<a class="element brand" href="/grammar"  title="Grammar" <%=current?("/grammar")%>>Gramática</a>
+		<a class="element brand" href="/test" title="Pruebas" <%=current?("/test")%>>Pruebas</a>
+		<span class="element-divider"></span>
+		<a class="element brand" href="https://github.com/alu0100699494/pl-prct08" title="Repo">Repositorio GitHub <span class="icon-github-2"></span></a>
+		
+		<div class="element place-right">
+            <a class="dropdown-toggle" href="#">Sign in</a>
+            <ul class="dropdown-menu  place-right" data-role="dropdown">
+                <li><a href="/auth/google_oauth2"  title="Google" <%=current?("/auth/google_oauth2")%>>Google <span class="icon-google-plus"></a> </li>
+                <li><a href="/auth/facebook"  title="Facebook" <%=current?("/auth/facebook")%>>Facebook <span class="icon-facebook"></span></a> </li>
+            </ul>
+        </div>
+	  </nav>
+	</nav>
+	
     <%= yield %>
   </body>
 </html>
