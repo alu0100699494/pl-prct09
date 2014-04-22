@@ -28,6 +28,13 @@ get '/auth/:name/callback' do
   PP.pp @auth.methods.sort
   flash[:notice] = 
         %Q{<div class="notice bg-lime fg-white marker-on-top">Autenticado como #{@auth['info'].name}.</div>}
+  
+  # Añadir a la base de datos directamente, siempre y cuando no exista
+  if !User.first(:username => session[:email])
+    u = User.create(:username => session[:email])
+    u.save
+  end
+        
   redirect '/'
 end
 

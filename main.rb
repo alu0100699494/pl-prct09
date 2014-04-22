@@ -8,7 +8,7 @@ require 'pp'
 
 enable :sessions
 set :session_secret, '*&(^#234)'
-set :reserved_words, %w{grammar test login auth logout}
+set :reserved_words, %w{grammar test login auth logout favicon.jpg}
 set :max_files, 10        # no more than max_files+1 will be saved per user
 set :max_users_shown, 8
 
@@ -41,7 +41,7 @@ get '/logout' do
       %Q{<div class="notice bg-lime fg-white marker-on-top">Se ha cerrado sesión correctamente.</div>}
   end
   
-  redirect back
+  redirect "/"
 end
 
 # Raiz, sin usuario seleccionado
@@ -52,8 +52,9 @@ get '/' do
   programs = []
 
   i = 0
+  length = usuarios.length
   if usuarios.length != 0
-    while i < usuarios.length && i < settings.max_users_shown
+    while i < length && i < settings.max_users_shown
       # Coger un usuario aleatorio y añadirlo a programas
       u = usuarios.sample
       programs.concat([u.username])
@@ -93,7 +94,7 @@ get '/:user?/:file?' do |user, file|
   erb :index, :locals => { :programs => programs, :source => source, :user => '/' + u.username + '/' }
 end
 
-get '/:user?' do |user|
+get '/:user?' do |user|    
   # Buscar programas de un usuario y mostrarlos en el menu
   u = User.first(:username => user)
 
@@ -138,11 +139,16 @@ post '/save' do
       redirect back
     else
       # Comprobar si el usuario existe.
-      u = User.first(session[:email])
+      puts "-> " + session[:email] + " <-"
+      u = User.first(:username => session[:email])
       if !u
-        # Si no existe, crear el usuario
-        u = User.create(:username => session[:email])
+        # Si no existe, error fatal
+        # u = User.create(:username => session[:email])
+        # puts "-> Creando nuevo usuario ->  " + u.to_str
+        flash[:notice] = 
+          %Q{<div class="notice bg-darkRed fg-white marker-on-top">No existe el usuario '#{session[:email]}' en la base de datos .</div>}
       end
+      pp u
 
       # Crear un programa y asociar al usuario
       c  = u.pl0programs.first(:name => name)
@@ -165,7 +171,7 @@ post '/save' do
       flash[:notice] = 
         %Q{<div class="notice bg-cyan fg-white marker-on-top">Fichero guardado como "#{c.name}" por "#{session[:name]}".</div>}
       # redirect to '/'+name
-      redirect to '/' + u.username # + '/' + name 
+      redirect to '/' + u.username + '/' + name 
     end
   else
     flash[:notice] = 
