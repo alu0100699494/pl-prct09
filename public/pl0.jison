@@ -39,7 +39,7 @@ block
 					symbolsTableProc[$1[i].id].type = "CONST";
 					tabla = 1;
 				};
-				/*else Error */
+				/*else Error no declarado*/
 			};
 		};
 		if($2){ 
@@ -51,15 +51,20 @@ block
 					symbolsTableProc[$2[i].value].value = $2[i].value;
 					tabla = 1;
 				};
-				/*else Error */
+				/*else Error no declarado*/
 			};
 		};
 		if($3){
 			$$ = $$.concat($3) 
 			for(i in $3){ 
 				if($3[i].id in symbolsTable){
+					if($3[i].parameters == symbolsTable[$3[i].id].value){
+						symbolsTableProc[$3[i].id] = symbolsTable[$3[i].id];
+						tabla = 1;
+					}
+					/*else Error num param*/
 				};
-				/*else Error */
+				/*else Error no declarado*/
 			};
 		};
 		
