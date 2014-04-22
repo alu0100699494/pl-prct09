@@ -147,6 +147,7 @@ post '/save' do
         # puts "-> Creando nuevo usuario ->  " + u.to_str
         flash[:notice] = 
           %Q{<div class="notice bg-darkRed fg-white marker-on-top">No existe el usuario '#{session[:email]}' en la base de datos .</div>}
+        redirect to '/'
       end
       pp u
 
