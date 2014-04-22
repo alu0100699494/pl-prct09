@@ -1,7 +1,7 @@
 /* description: Parses end executes mathematical expressions. */
 
 %{
-// Sin funciones
+	symbolsTable = {};
 %}
 
 %token NUMBER ID EOF PROCEDURE CALL CONST VAR BEGIN END WHILE DO ODD IF THEN ELSE
@@ -19,7 +19,8 @@
 program
     : block DOT EOF
 	  {
-	    return $1;
+	    console.log(symbolsTable);
+	    return [{tabla: symbolsTable, programa: $1}];
 	  }
     ;
 
@@ -27,16 +28,47 @@ block
     : block_const block_vars block_procs statement
 	  {
 	    $$ = [];
+	    symbolsTableProc = {};
+	    tabla = 0;
 		
-		if($1) $$ = $$.concat($1);
-		if($2) $$ = $$.concat($2);
-		if($3) $$ = $$.concat($3);
+		if($1){ 
+			for(i in $1){ 
+				if($1[i].id in symbolsTable){
+					symbolsTableProc[$1[i].id] = symbolsTable[$1[i].id];
+					//delete symbolsTable[$1[i].id]
+					symbolsTableProc[$1[i].id].type = "CONST";
+					tabla = 1;
+				};
+				/*else Error */
+			};
+		};
+		if($2){ 
+			for(i in $2){ 
+				if($2[i].value in symbolsTable){
+					symbolsTableProc[$2[i].value] = symbolsTable[$2[i].value];
+					//delete symbolsTable[$2[i].value]
+					symbolsTableProc[$2[i].value].type = "VAR";
+					symbolsTableProc[$2[i].value].value = $2[i].value;
+					tabla = 1;
+				};
+				/*else Error */
+			};
+		};
+		if($3){
+			$$ = $$.concat($3) 
+			for(i in $3){ 
+				if($3[i].id in symbolsTable){
+				};
+				/*else Error */
+			};
+		};
 		
 		if($$.length > 0)
 		  $$ = [$$];
 		
 		if($4)
 		  $$ = $$.concat($4);
+		if(tabla != 0) $$ = $$.concat([{tabla: symbolsTableProc}]);
 	  }
 	;
 	
@@ -130,10 +162,12 @@ block
 statement
     : ID '=' expression
 	  {
+            symbolsTable[$1] = {type: "constvar", value: ""}
 	    $$ = {type: $2, left: $1, right: $3};
 	  }
 	| CALL ID statement_call_arguments
 	  {
+	    symbolsTable[$2] = {type: "PROCEDURE", value: JSON.stringify($3.length)}
 	    $$ = {type: $1, id: $2, arguments: $3};
 	  }
 	| BEGIN statement statement_begin_st END
