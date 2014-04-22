@@ -26,6 +26,13 @@ get '/test' do
   erb :test
 end
 
+# Necesario, bug de Rubygems
+class String
+  def name
+    to_str
+  end
+end
+
 get '/logout' do
   # Si está autenticado, desautenticar
   if session[:auth]
