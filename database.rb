@@ -18,6 +18,7 @@ class User
   
   property :username, String, :key => true
   has n, :pl0programs
+  
 end
 
 DataMapper.finalize

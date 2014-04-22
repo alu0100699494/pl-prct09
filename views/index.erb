@@ -14,7 +14,7 @@
     <div class="span10 offset1">
       <div class="button-set">
         <% programs.sort.each do |p, index| %>
-        <button class="<%=current?("/"+p.name) %>"><a href="<%= p.name %>" > <%= p.name %> </a></button>
+        <button class="<%=current?(user + p.name) %>"><a href="<%= user %><%= p.name %>" > <%= p.name %> </a></button>
         <% end %>
       </div>
     </div> 
@@ -75,5 +75,5 @@
     $("#flash").delay(5000).fadeOut(1500);
 </script>
 
-<script type="text/javascript" src="pl0.js"></script>
-<script type="text/javascript" src="main.js"></script>
+<script type="text/javascript" src="/pl0.js"></script>
+<script type="text/javascript" src="/main.js"></script>

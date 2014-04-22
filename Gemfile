@@ -6,9 +6,9 @@ gem "sinatra-contrib"
 gem "sinatra-flash"
 gem "thin"
 gem 'data_mapper'
-gem 'omniauth', '~> 1.1.4'
-gem 'omniauth-google-oauth2', '~> 0.2.1'
-gem 'omniauth-facebook', '~> 1.4.0'
+gem 'omniauth'
+gem 'omniauth-google-oauth2'
+gem 'omniauth-facebook'
 gem 'sass'
 
 group :development do

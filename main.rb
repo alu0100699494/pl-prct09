@@ -10,6 +10,7 @@ enable :sessions
 set :session_secret, '*&(^#234)'
 set :reserved_words, %w{grammar test login auth logout}
 set :max_files, 10        # no more than max_files+1 will be saved per user
+set :max_users_shown, 8
 
 helpers do
   def current?(path='/')
@@ -38,21 +39,71 @@ end
 
 # Raiz, sin usuario seleccionado
 get '/' do
+  # Truco: Hacer que los programas sean la lista actual de usuarios (o 10 aleatorios)
+  # Escoger 10 usuarios aleatorios
+  usuarios = User.all
   programs = []
+
+  i = 0
+  if usuarios.length != 0
+    while i < usuarios.length && i < settings.max_users_shown
+      # Coger un usuario aleatorio y añadirlo a programas
+      u = usuarios.sample
+      programs.concat([u.username])
+      usuarios.delete(u)
+      i += 1
+    end
+  end
   
   source = "a = 3-2-1."
   erb :index, 
-      :locals => { :programs => programs, :source => source }
+      :locals => { :programs => programs, :source => source, :user => "" }
+end
+
+get '/:user?/:file?' do |user, file|
+  # Buscar y mostrar la lista de programas de un usuario
+  u = User.first(:username => user)
+
+  if !u
+    flash[:notice] = 
+      %Q{<div class="notice bg-darkRed fg-white marker-on-top">No se ha encontrado al usuario "#{user}". </div>}
+    redirect to '/'
+  end
+  
+  # Cargar programa del usuario deseado
+  programs = u.pl0programs
+  c = programs.first(:name => file)
+  
+  if !c
+    flash[:notice] = 
+      %Q{<div class="notice bg-darkRed fg-white marker-on-top">No se ha encontrado el fichero "#{file}" del usuario "#{user}". </div>}
+    redirect to '/'
+  end
+
+  # Cargar los datos para la página
+  source = c.source
+
+  erb :index, :locals => { :programs => programs, :source => source, :user => '/' + u.username + '/' }
+end
+
+get '/:user?' do |user|
+  # Buscar programas de un usuario y mostrarlos en el menu
+  u = User.first(:username => user)
+
+  if !u
+    flash[:notice] = 
+      %Q{<div class="notice bg-darkRed fg-white marker-on-top">No se ha encontrado al usuario "#{user}". </div>}
+    redirect to '/'
+  end
+
+  # Cargar los programas del usuario actual
+  programs = u.pl0programs
+  source = ""
+
+  erb :index, :locals => { :programs => programs, :source => source, :user => u.username + '/' }
 end
 
 get '/:selected?' do |selected|
-  puts "LISTA DE USUARIOS:"
-  puts "-------------------------------"
-  User.each do |u|
-    pp u
-  end
-  puts "-------------------------------"
-      
   # Buscar programas de un usuario y mostrarlos en el menu
   u = User.first(:username => selected)
   puts u
@@ -67,8 +118,7 @@ get '/:selected?' do |selected|
 
   c = programs[0]
   source = if c then c.source else "a = 3-2-1." end
-  erb :index, 
-      :locals => { :programs => programs, :source => source }
+  erb :index,  :locals => { :programs => programs, :source => source, :user => u.username }
 end
 
 post '/save' do
@@ -102,14 +152,8 @@ post '/save' do
         u.pl0programs << c
       end
       
+      # Guardar el usuario
       u.save
-      
-      puts "PROGRAMAS DEL USUARIO QUE ACABA DE GUARDAR:"
-      puts "-------------------------------"
-      u.pl0programs.each do |p|
-        pp p
-      end
-      puts "-------------------------------"
       
       flash[:notice] = 
         %Q{<div class="notice bg-cyan fg-white marker-on-top">Fichero guardado como "#{c.name}" por "#{session[:name]}".</div>}
