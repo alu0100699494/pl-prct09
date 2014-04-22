@@ -15,6 +15,7 @@ get '/auth/:name/callback' do
   session[:name] = @auth['info'].name
   session[:image] = @auth['info'].image
   session[:url] = @auth['info'].urls.values[0]
+  session[:email] = @auth['info'].email
   
   puts "params = #{params}"
   puts "@auth.class = #{@auth.class}"
