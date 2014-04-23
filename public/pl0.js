@@ -104,6 +104,8 @@ case 3:
 	  
 break;
 case 4:
+        if (symbolTable.vars[$$[$0-4]]) 
+          throw new Error("Constante "+$$[$0-4]+" ya definida.");
 	      symbolTable.vars[$$[$0-4]] = { type: "CONST", value: $$[$0-2] }
 	      this.$ = [{ type: $$[$0-5], id: $$[$0-4], value: $$[$0-2] }];
 		    if($$[$0-1]) this.$ = this.$.concat($$[$0-1]);
@@ -114,6 +116,9 @@ case 5:
 	    
 break;
 case 6:
+        if (symbolTable.vars[$$[$0-3]]) 
+          throw new Error("Constante "+$$[$0-3]+" ya definida.");
+
 		    symbolTable.vars[$$[$0-3]] = { type: "CONST", value: $$[$0-1] }
 		    this.$ = [{ type: "CONST", id: $$[$0-3], value: $$[$0-1] }];
 		    if($$[$0]) this.$ = this.$.concat($$[$0]);
@@ -123,7 +128,9 @@ case 7:
 	    this.$ = [];
 	  
 break;
-case 8:	
+case 8:
+        if (symbolTable.vars[$$[$0-2]]) 
+          throw new Error("Variable "+$$[$0-2]+" ya definida.");
 		    symbolTable.vars[$$[$0-2]] = { type: "VAR", value: "" }
 		    this.$ = [{ type: $$[$0-3], value: $$[$0-2] }];
 		    if($$[$0-1]) this.$ = this.$.concat($$[$0-1]);
@@ -134,6 +141,8 @@ case 9:
 		
 break;
 case 10:
+          if (symbolTable.vars[$$[$0-1]]) 
+            throw new Error("Variable "+$$[$0-1]+" ya definida.");
           symbolTable.vars[$$[$0-1]] = { type: "VAR", value: "" }
           this.$ = [{ type: "VAR", value: $$[$0-1] }];
           if($$[$0]) this.$ = this.$.concat($$[$0]);
@@ -157,18 +166,24 @@ break;
 case 14:
         if (symbolTable.vars[$$[$0-1]]) 
           throw new Error("Función "+$$[$0-1]+" ya definido.");
-        symbolTable.vars[$$[$0-1]] = { type: "PROCEDURE", name: $$[$0-1], value: $$[$0].length }; // Contar parámetros
+        symbolTable.vars[$$[$0-1]] = { type: "PROCEDURE", name: $$[$0-1], value: $$[$0].length }; // Contar parámetros en "numparameters"
         makeNewScope($$[$0-1]);
+        
+        // Asociar los parámetros al ámbito actual.
+        $$[$0].forEach(function(p) {
+          // Guardar parámetro
+          console.log(p.value);
+          if (symbolTable.vars[p.value]) 
+            throw new Error("Identificador " + p.value + " ya definido.");
+            
+          symbolTable.vars[p.value] = { type: "PARAM", value: "" };
+        });
 
         this.$ = {id: $$[$0-1], parameters: $$[$0]};
       
 break;
 case 15:
           this.$ = [{type: 'ID', value: $$[$0-2]}].concat($$[$0-1]);
-          // Guardar parámetro
-          if (symbolTable.vars[$$[$0-2]]) 
-            throw new Error("Identificador " + $$[$0-2] + " ya definido.");
-          symbolTable.vars[$$[$0-2]] = { type: "PARAM", name: $$[$0-2], value: "" };
         
 break;
 case 16:

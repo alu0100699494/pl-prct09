@@ -96,6 +96,8 @@ block
   block_const
       : CONST ID '=' NUMBER block_const_ids SEMICOLON
 	    {
+        if (symbolTable.vars[$ID]) 
+          throw new Error("Constante "+$ID+" ya definida.");
 	      symbolTable.vars[$ID] = { type: "CONST", value: $NUMBER }
 	      $$ = [{ type: $1, id: $2, value: $4 }];
 		    if($5) $$ = $$.concat($5);
@@ -109,6 +111,9 @@ block
   block_const_ids
       : COMMA ID '=' NUMBER block_const_ids
 	    {
+        if (symbolTable.vars[$ID]) 
+          throw new Error("Constante "+$ID+" ya definida.");
+
 		    symbolTable.vars[$ID] = { type: "CONST", value: $NUMBER }
 		    $$ = [{ type: "CONST", id: $2, value: $4 }];
 		    if($5) $$ = $$.concat($5);
@@ -121,7 +126,9 @@ block
 	  
   block_vars
       : VAR ID block_vars_id SEMICOLON
-	    {	
+	    {
+        if (symbolTable.vars[$ID]) 
+          throw new Error("Variable "+$ID+" ya definida.");
 		    symbolTable.vars[$ID] = { type: "VAR", value: "" }
 		    $$ = [{ type: $1, value: $2 }];
 		    if($3) $$ = $$.concat($3);
@@ -135,6 +142,8 @@ block
   block_vars_id
       : COMMA ID block_vars_id
         {
+          if (symbolTable.vars[$ID]) 
+            throw new Error("Variable "+$ID+" ya definida.");
           symbolTable.vars[$ID] = { type: "VAR", value: "" }
           $$ = [{ type: "VAR", value: $2 }];
           if($3) $$ = $$.concat($3);
@@ -165,10 +174,20 @@ block
       {
         if (symbolTable.vars[$ID]) 
           throw new Error("Función "+$ID+" ya definido.");
-        symbolTable.vars[$ID] = { type: "PROCEDURE", name: $ID, value: $2.length }; // Contar parámetros
+        symbolTable.vars[$ID] = { type: "PROCEDURE", name: $ID, value: $2.length }; // Contar parámetros en "numparameters"
         makeNewScope($ID);
+        
+        // Asociar los parámetros al ámbito actual.
+        $2.forEach(function(p) {
+          // Guardar parámetro
+          console.log(p.value);
+          if (symbolTable.vars[p.value]) 
+            throw new Error("Identificador " + p.value + " ya definido.");
+            
+          symbolTable.vars[p.value] = { type: "PARAM", value: "" };
+        });
 
-        $$ = {id: $ID, parameters: $2};
+        $$ = {id: $1, parameters: $2};
       }
 	  ;
 	  
@@ -176,10 +195,6 @@ block
       : '(' VAR ID block_procs_parameters_ids ')'
         {
           $$ = [{type: 'ID', value: $3}].concat($4);
-          // Guardar parámetro
-          if (symbolTable.vars[$ID]) 
-            throw new Error("Identificador " + $ID + " ya definido.");
-          symbolTable.vars[$ID] = { type: "PARAM", name: $ID, value: "" };
         }
       | '(' ')'
         {
