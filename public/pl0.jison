@@ -34,7 +34,7 @@
 	}
   
 	function symbolsToString(){
-		symbols = [{scope_id: scope}];
+		symbols = [];
 		for(var key in symbolTable.vars) {
 	    symbols.push({id: key, type: symbolTable.vars[key].type, value: symbolTable.vars[key].value});
     };
