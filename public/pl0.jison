@@ -16,7 +16,7 @@
 
 	function makeNewScope(id) { // En cada declaracion de procedimiento poner esto
    		scope++;
-                symbolTables[scope] =  { name: id, father: symbolTable, vars: {} };
+      symbolTables[scope] =  { name: id, father: symbolTable, vars: {} };
    		symbolTable.vars[id].symbolTable = symbolTables[scope];
    		symbolTable = symbolTables[scope];
    		return symbolTable;
@@ -61,14 +61,20 @@
 
 %% /* language grammar */
 program
-    : block DOT EOF
+    : reset block DOT EOF
 	  {
-	    $$ = [{table: symbolsToString()}].concat($1);
-            reset();
-	    return $$;
+	    return [{table: symbolsToString()}].concat($2);
 	  }
     ;
 
+reset
+    : /* empty */
+    {
+      // Reiniciar programa.
+      reset();
+    }
+    ;
+    
 block
     : block_const block_vars block_procs statement
 	  {
@@ -202,12 +208,12 @@ statement
            info = info[0];
 
            if (info && info.type === "VAR") { 
-             $$ = {type: $2, left: $1, right: $3, declared_in: symbolTables[s].name};
+             $$ = {type: $2, left: {id: $1, declared_in: symbolTables[s].name }, right: $3};
            }
            else if (info && info.type === "PARAM") { //Parametro 
-             $$ = {type: $2, left: $1, right: $3, declared_in: symbolTables[s].name};
+             $$ = {type: $2, left: {id: $1, declared_in: symbolTables[s].name }, right: $3};
            }
-	   else if (info && info.type === "CONST") { 
+	         else if (info && info.type === "CONST") { 
               throw new Error("Symbol "+$ID+" refers to a constant");
            }
            else if (info && info.type === "PROCEDURE") { 
@@ -350,5 +356,18 @@ expression
 	    $$ = $2;
 	  }
 	| ID
+    {
+      // Comprobar si existe
+      var info = findSymbol($ID);
+      var s = info[1];
+      info = info[0];
+
+      if (info && info.type === "PROCEDURE")
+        throw new Error("Symbol "+$ID+" refers to a procedure");
+      else if (info)
+        $$ = { id: $1, belongs_to: symbolTables[s].name };
+      else
+        throw new Error("Symbol "+$ID+" not declared");
+    }
 	| NUMBER
 	;
