@@ -140,8 +140,9 @@ block
   block_procs
       : PROCEDURE functionname block_procs_parameters SEMICOLON block SEMICOLON block_procs
 	    {
+		 
 		  getFormerScope();
-                 
+		  symbolTable.vars[$2].value = $3.length;
 		  $$ = [{type: $1, id: $2, parameters: $3, block: $5, table: symbolsToString()}];
 		  if($7) $$ = $$.concat($7);
 
@@ -158,7 +159,7 @@ block
           {
                    if (symbolTable.vars[$ID]) 
                      throw new Error("Función "+$ID+" definida dos veces");
-                   symbolTable.vars[$ID] = { type: "PROCEDURE", name: $ID };
+                   symbolTable.vars[$ID] = { type: "PROCEDURE", name: $ID, value: 0 };
 
                    makeNewScope($ID);
 
@@ -169,6 +170,7 @@ block
   block_procs_parameters
       : '(' VAR ID block_procs_parameters_ids ')'
 	    {
+		  symbolTable.vars[$ID] = { type: "PARAMETER", value: "" }
 		  $$ = [{type: 'ID', value: $3}].concat($4);
 		}
 	  | '(' ')'
@@ -184,6 +186,7 @@ block
   block_procs_parameters_ids
       : COMMA VAR ID block_procs_parameters_ids
 	    {
+		   symbolTable.vars[$ID] = { type: "PARAMETER", value: "" }
 		   $$ = [{type: 'ID', value: $3}].concat($4);
 		}
 	  | /* empty */
@@ -231,6 +234,7 @@ statement
               throw new Error("Symbol "+$ID+" refers to a constant");
            }
            else if (info && info.type === "PROCEDURE") { 
+	      console.log(info);
               $$ = {type: $1, id: $2, arguments: $3};
            }
            else { 
