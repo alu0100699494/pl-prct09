@@ -141,10 +141,9 @@ case 10:
 		
 break;
 case 11:
-		 
+		  this.$ = [{type: $$[$0-6], id: $$[$0-5], parameters: $$[$0-4], block: $$[$0-2], table: symbolsToString()}];
 		  getFormerScope();
 		  symbolTable.vars[$$[$0-5]].value = $$[$0-4].length;
-		  this.$ = [{type: $$[$0-6], id: $$[$0-5], parameters: $$[$0-4], block: $$[$0-2], table: symbolsToString()}];
 		  if($$[$0]) this.$ = this.$.concat($$[$0]);
 
 
@@ -165,7 +164,7 @@ case 13:
                 
 break;
 case 14:
-		  symbolTable.vars[$$[$0-2]] = { type: "PARAMETER", value: "" }
+		  symbolTable.vars[$$[$0-2]] = { type: "PARAMETER", value: "" };
 		  this.$ = [{type: 'ID', value: $$[$0-2]}].concat($$[$0-1]);
 		
 break;
@@ -178,7 +177,7 @@ case 16:
 		
 break;
 case 17:
-		   symbolTable.vars[$$[$0-1]] = { type: "PARAMETER", value: "" }
+		   symbolTable.vars[$$[$0-1]] = { type: "PARAMETER", value: "" };
 		   this.$ = [{type: 'ID', value: $$[$0-1]}].concat($$[$0]);
 		
 break;
@@ -192,10 +191,10 @@ case 19:
            info = info[0];
 
            if (info && info.type === "VAR") { 
-             this.$ = {type: $$[$0-1], left: $$[$0-2], right: $$[$0], belongs_to: symbolTables[s].name};
+             this.$ = {type: $$[$0-1], left: $$[$0-2], right: $$[$0], declared_in: symbolTables[s].name};
            }
            else if (info && info.type === "PARAM") { //Parametro 
-             this.$ = {type: $$[$0-1], left: $$[$0-2], right: $$[$0], belongs_to: symbolTables[s].name};
+             this.$ = {type: $$[$0-1], left: $$[$0-2], right: $$[$0], declared_in: symbolTables[s].name};
            }
 	   else if (info && info.type === "CONST") { 
               throw new Error("Symbol "+$$[$0-2]+" refers to a constant");
@@ -223,8 +222,7 @@ case 20:
               throw new Error("Symbol "+$$[$0-1]+" refers to a constant");
            }
            else if (info && info.type === "PROCEDURE") { 
-	      console.log(info);
-              this.$ = {type: $$[$0-2], id: $$[$0-1], arguments: $$[$0]};
+              this.$ = {type: $$[$0-2], id: $$[$0-1], arguments: $$[$0], declared_in: symbolTables[s].name};
            }
            else { 
               throw new Error("Symbol "+$$[$0-1]+" not declared");

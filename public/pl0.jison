@@ -140,10 +140,9 @@ block
   block_procs
       : PROCEDURE functionname block_procs_parameters SEMICOLON block SEMICOLON block_procs
 	    {
-		 
+		  $$ = [{type: $1, id: $2, parameters: $3, block: $5, table: symbolsToString()}];
 		  getFormerScope();
 		  symbolTable.vars[$2].value = $3.length;
-		  $$ = [{type: $1, id: $2, parameters: $3, block: $5, table: symbolsToString()}];
 		  if($7) $$ = $$.concat($7);
 
 
@@ -170,7 +169,7 @@ block
   block_procs_parameters
       : '(' VAR ID block_procs_parameters_ids ')'
 	    {
-		  symbolTable.vars[$ID] = { type: "PARAMETER", value: "" }
+		  symbolTable.vars[$ID] = { type: "PARAMETER", value: "" };
 		  $$ = [{type: 'ID', value: $3}].concat($4);
 		}
 	  | '(' ')'
@@ -186,7 +185,7 @@ block
   block_procs_parameters_ids
       : COMMA VAR ID block_procs_parameters_ids
 	    {
-		   symbolTable.vars[$ID] = { type: "PARAMETER", value: "" }
+		   symbolTable.vars[$ID] = { type: "PARAMETER", value: "" };
 		   $$ = [{type: 'ID', value: $3}].concat($4);
 		}
 	  | /* empty */
@@ -203,10 +202,10 @@ statement
            info = info[0];
 
            if (info && info.type === "VAR") { 
-             $$ = {type: $2, left: $1, right: $3, belongs_to: symbolTables[s].name};
+             $$ = {type: $2, left: $1, right: $3, declared_in: symbolTables[s].name};
            }
            else if (info && info.type === "PARAM") { //Parametro 
-             $$ = {type: $2, left: $1, right: $3, belongs_to: symbolTables[s].name};
+             $$ = {type: $2, left: $1, right: $3, declared_in: symbolTables[s].name};
            }
 	   else if (info && info.type === "CONST") { 
               throw new Error("Symbol "+$ID+" refers to a constant");
@@ -234,8 +233,7 @@ statement
               throw new Error("Symbol "+$ID+" refers to a constant");
            }
            else if (info && info.type === "PROCEDURE") { 
-	      console.log(info);
-              $$ = {type: $1, id: $2, arguments: $3};
+              $$ = {type: $1, id: $2, arguments: $3, declared_in: symbolTables[s].name};
            }
            else { 
               throw new Error("Symbol "+$ID+" not declared");
