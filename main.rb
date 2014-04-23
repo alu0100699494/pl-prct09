@@ -38,7 +38,7 @@ get '/logout' do
   if session[:auth]
     session[:auth] = nil;
     flash[:notice] = 
-      %Q{<div class="notice bg-lime fg-white marker-on-top">Se ha cerrado sesión correctamente.</div>}
+      %Q{<div class="notice bg-lime fg-white marker-on-top">Se ha cerrado sesion correctamente.</div>}
   end
   
   redirect "/"
@@ -176,8 +176,8 @@ post '/save' do
     end
   else
     flash[:notice] = 
-      %Q{<div class="notice bg-darkRed fg-white marker-on-top">No está autenticado.<br />
-         Inicie sesión con Google o con Facebook.
+      %Q{<div class="notice bg-darkRed fg-white marker-on-top">No esta autenticado.<br />
+         Inicie sesion con Google o con Facebook.
          </div>}
     redirect back
   end
