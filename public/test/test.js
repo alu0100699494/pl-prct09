@@ -45,8 +45,8 @@ suite('Tests', function(){
 
   test('block', function(){
     obj = pl0.parse("CONST a = 3; VAR b; PROCEDURE p; b = a + 3; CALL p.")
-    assert.equal(obj[0].symboltable[1].type, "CONST")
-    assert.equal(obj[0].symboltable[2].type, "VAR")
+    assert.equal(obj[0].symboltable[0].type, "CONST")
+    assert.equal(obj[0].symboltable[1].type, "VAR")
     assert.equal(obj[1][0].type, "PROCEDURE")
     assert.equal(obj[2].type, "CALL")
   });
@@ -96,35 +96,35 @@ suite('Tests', function(){
 
   test('Tabla de simbolos global', function(){
     obj = pl0.parse("CONST a = 3; VAR x; PROCEDURE pro;BEGIN x = x * x END;x=2.");
-    assert.equal(obj[0].symboltable[1].id, "a") 
-    assert.equal(obj[0].symboltable[1].type, "CONST") 
-    assert.equal(obj[0].symboltable[1].value, "3") 
-    assert.equal(obj[0].symboltable[2].id, "x") 
-    assert.equal(obj[0].symboltable[2].type, "VAR") 
-    assert.equal(obj[0].symboltable[2].value, "")
-    assert.equal(obj[0].symboltable[3].id, "pro") 
-    assert.equal(obj[0].symboltable[3].type, "PROCEDURE") 
-    assert.equal(obj[0].symboltable[3].value, "0")
+    assert.equal(obj[0].symboltable[0].id, "a") 
+    assert.equal(obj[0].symboltable[0].type, "CONST") 
+    assert.equal(obj[0].symboltable[0].value, "3") 
+    assert.equal(obj[0].symboltable[1].id, "x") 
+    assert.equal(obj[0].symboltable[1].type, "VAR") 
+    assert.equal(obj[0].symboltable[1].value, "")
+    assert.equal(obj[0].symboltable[2].id, "pro") 
+    assert.equal(obj[0].symboltable[2].type, "PROCEDURE") 
+    assert.equal(obj[0].symboltable[2].value, "0")
   });
 
   test('Tablas de procedure', function(){
     obj = pl0.parse("VAR x, squ;PROCEDURE square;CONST a = 2;VAR x;PROCEDURE rectangle;VAR c;;;x = 3.")
-    assert.equal(obj[1][0].symboltable[1].id, "a") 
-    assert.equal(obj[1][0].symboltable[1].type, "CONST") 
-    assert.equal(obj[1][0].symboltable[1].value, "2") 
-    assert.equal(obj[1][0].symboltable[2].id, "x") 
-    assert.equal(obj[1][0].symboltable[2].type, "VAR") 
-    assert.equal(obj[1][0].symboltable[2].value, "")
-    assert.equal(obj[1][0].symboltable[3].id, "rectangle") 
-    assert.equal(obj[1][0].symboltable[3].type, "PROCEDURE") 
-    assert.equal(obj[1][0].symboltable[3].value, "0")
+    assert.equal(obj[1][0].symboltable[0].id, "a") 
+    assert.equal(obj[1][0].symboltable[0].type, "CONST") 
+    assert.equal(obj[1][0].symboltable[0].value, "2") 
+    assert.equal(obj[1][0].symboltable[1].id, "x") 
+    assert.equal(obj[1][0].symboltable[1].type, "VAR") 
+    assert.equal(obj[1][0].symboltable[1].value, "")
+    assert.equal(obj[1][0].symboltable[2].id, "rectangle") 
+    assert.equal(obj[1][0].symboltable[2].type, "PROCEDURE") 
+    assert.equal(obj[1][0].symboltable[2].value, "0")
   });
 
   test('Parametros', function(){
     obj = pl0.parse("VAR x, squ;PROCEDURE square(VAR p, VAR j);CONST a = 2;VAR x;PROCEDURE rectangle;VAR c;;;x = 3.")
-    assert.equal(obj[1][0].symboltable[1].id, "p");
-    assert.equal(obj[1][0].symboltable[1].type, "PARAM");
-    assert.equal(obj[0].symboltable[3].value, "2");
+    assert.equal(obj[1][0].symboltable[0].id, "p");
+    assert.equal(obj[1][0].symboltable[0].type, "PARAM");
+    assert.equal(obj[0].symboltable[2].value, "2");
   });
 
   test('Referencia a donde se declaro un id', function(){
