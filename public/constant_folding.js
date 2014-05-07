@@ -1,16 +1,31 @@
 function transformacion_pl0(arbol)
 {
+  function buscar_valores_hijos(nodo)
+  {
+    var left = null;
+    var right = null;
+    
+    if(typeof nodo.left == "object" && nodo.left.type && nodo.left.type == "CONST")        // Buscar constante
+      left = nodo.left.value;
+    else if(typeof nodo.left != "object")                                                 // Buscar numero
+      left = nodo.left;
+      
+    if(typeof nodo.right == "object" && nodo.right.type && nodo.right.type == "CONST")     // Buscar constante
+      right = nodo.right.value;
+    else if(typeof nodo.right != "object")                                                 // Buscar numero
+      right = nodo.right;
+  
+    return [left, right];
+  }
+
   function transformacion_PLUS(nombre, nodo, padre)
   {
     if(nodo.type && nodo.type == "+")
     {
-        // Comprobar que los hijos sean constantes
-      var left = null;
-      var right = null;
-      
-      left = (typeof nodo.left != "object")? nodo.left : null;
-      right = (typeof nodo.right != "object")? nodo.right : null;
-      
+      var result = buscar_valores_hijos(nodo);
+      var left = result[0];
+      var right = result[1];
+     
       if(left && right)
       {
         delete nodo;
@@ -23,12 +38,9 @@ function transformacion_pl0(arbol)
   {
     if(nodo.type && nodo.type == "-")
     {
-        // Comprobar que los hijos sean constantes
-      var left = null;
-      var right = null;
-      
-      left = (typeof nodo.left != "object")? nodo.left : null;
-      right = (typeof nodo.right != "object")? nodo.right : null;
+      var result = buscar_valores_hijos(nodo);
+      var left = result[0];
+      var right = result[1];
       
       if(left && right)
       {
@@ -42,9 +54,9 @@ function transformacion_pl0(arbol)
   {
     if(nodo.type && nodo.type == "*")
     {
-        // Comprobar que los hijos sean constantes
-      var left = null;
-      var right = null;
+      var result = buscar_valores_hijos(nodo);
+      var left = result[0];
+      var right = result[1];
       
       left = (typeof nodo.left != "object")? nodo.left : null;
       right = (typeof nodo.right != "object")? nodo.right : null;
@@ -61,9 +73,9 @@ function transformacion_pl0(arbol)
   {
     if(nodo.type && nodo.type == "/")
     {
-        // Comprobar que los hijos sean constantes
-      var left = null;
-      var right = null;
+      var result = buscar_valores_hijos(nodo);
+      var left = result[0];
+      var right = result[1];
       
       left = (typeof nodo.left != "object")? nodo.left : null;
       right = (typeof nodo.right != "object")? nodo.right : null;
@@ -86,17 +98,13 @@ function transformacion_pl0(arbol)
   }
 
   function recorrer(arbol) {
-      if( typeof arbol == "object" ) {
-          $.each(arbol, function(k,v) {
-        console.log(k + ":" + v);
-              recorrer(v);
+    if( typeof arbol == "object" ) {
+      $.each(arbol, function(k,v) {
+        recorrer(v);
         // Constant folding aquí
         constant_folding(k, v, arbol); // Clave, subarbol y padre
-          });
-      }
-      else {
-          // jsonOb is a number or string
-      }
+      });
+    }
   }
 
   function clone(obj) {
@@ -108,6 +116,7 @@ function transformacion_pl0(arbol)
 		return copy;
   }
 
+  // Enviar resultado
   var resultado = clone(arbol);
   recorrer(resultado);
   

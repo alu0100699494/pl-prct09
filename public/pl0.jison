@@ -414,7 +414,10 @@ expression
       if (info && info.type === "PROCEDURE")
         throw new Error("Symbol "+$ID+" refers to a procedure");
       else if (info)
-        $$ = { id: $1, declared_in: symbolTables[s].name };
+      {
+        // Trucado para poder plegar las "CONST"
+        $$ = { id: $1, type: info.type, value: info.value, declared_in: symbolTables[s].name };
+      }
       else
         throw new Error("Symbol "+$ID+" not declared");
     }

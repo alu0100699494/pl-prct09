@@ -381,7 +381,10 @@ case 44:
       if (info && info.type === "PROCEDURE")
         throw new Error("Symbol "+$$[$0]+" refers to a procedure");
       else if (info)
-        this.$ = { id: $$[$0], declared_in: symbolTables[s].name };
+      {
+        // Trucado para poder plegar las "CONST"
+        this.$ = { id: $$[$0], type: info.type, value: info.value, declared_in: symbolTables[s].name };
+      }
       else
         throw new Error("Symbol "+$$[$0]+" not declared");
     
