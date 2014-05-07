@@ -1,17 +1,19 @@
-# Práctica 08 - Procesadores de Lenguajes#
+# Práctica 09 - Procesadores de Lenguajes#
 ## 1. Objetivo de la práctica ##
 
 El objetivo de la práctica consiste en realizar un **analizador sintáctico recursivo no predictivo** o *parser* para un el antiguo lenguaje ***PL/0*** con ayuda de la libería **Jison**, permitiendo backtracking. Además, se pide modificar la gramática del lenguaje **PL/0** Para que acepte las sentencias *if-then-else* y maneje argumentos en los procedimientos (*PROCEDURE* y *CALL* ). 
 
 Posteriormente, se deberá realizar un análisis de ámbito o semántico para comprobar la aparición de los identificadores, asegurándonos, por ejemplo, que no se le asigna un valor a una constante (*CONST*), o que se intente hacer un *CALL* con un identificador de una variable, y no de un procedimiento.
 
-Finalmente, se debe modificar la estructura del programa *Ruby/Sinatra* para poder almacenar usuarios que guardan programas, y proveer una ruta para ver los programas guardados por un determinado usuario.
+Después de eso, se debe modificar la estructura del programa *Ruby/Sinatra* para poder almacenar usuarios que guardan programas, y proveer una ruta para ver los programas guardados por un determinado usuario.
+
+Finalmente, y como objetivo de la práctica actual (y no de las anteriores), se busca crear un método capaz de recorrer el árbol generado por nuestro parser para realizar un plegado de constantes, optimizando ligeramente nuestro código.
 
 ## 2. Acceso a la página web ##
 Se puede acceder a la página web de *Heroku* alojada en el siguiente enlace:
 
-- Despliegue en Heroku: [http://alu0100699494-pl-prct08.herokuapp.com](http://alu0100699494-pl-prct08.herokuapp.com)
-- Pruebas: [http://alu0100699494-pl-prct08.herokuapp.com/test](http://alu0100699494-pl-prct08.herokuapp.com/test)
+- Despliegue en Heroku: [http://alu0100699494-pl-prct09.herokuapp.com](http://alu0100699494-pl-prct09.herokuapp.com)
+- Pruebas: [http://alu0100699494-pl-prct09.herokuapp.com/test](http://alu0100699494-pl-prct09.herokuapp.com/test)
 
 ## 3. Dependencias ##
 Se ha hecho uso de la librerías siguientes:
@@ -26,17 +28,13 @@ Otras librerías pertenecen al lado del *servidor* (ruby). Además, no es necesa
 Se ha repartido el trabajo de la práctica, de una manera más o menos equitativa, tal que:
 
 ### Laura ###
-- Análisis de **ámbito**:
-  - Creación de tablas de símbolos.
-  - Comprobación de uso de identificadores.
-  - Asociación de uso de identificadores con su ámbito.
-  - Gestión de errores. 
+- Actualización de las pruebas.
 
 ### Daniel ###
-- Inicializar el repositorio.
-- Estilo Metro UI CSS.
-- Gestión de usuarios y programas con *DataMapper*.
-- Nuevas pruebas.
+- Plegado de constantes (*CONST* en PL/0).
+
+### Ambos ###
+- Plegado de constantes numéricas.
 
 
 ## 5. Autores ##
