@@ -58,9 +58,6 @@ function transformacion_pl0(arbol)
       var left = result[0];
       var right = result[1];
       
-      left = (typeof nodo.left != "object")? nodo.left : null;
-      right = (typeof nodo.right != "object")? nodo.right : null;
-      
       if(left && right)
       {
         delete nodo;
@@ -76,9 +73,6 @@ function transformacion_pl0(arbol)
       var result = buscar_valores_hijos(nodo);
       var left = result[0];
       var right = result[1];
-      
-      left = (typeof nodo.left != "object")? nodo.left : null;
-      right = (typeof nodo.right != "object")? nodo.right : null;
       
       if(left && right)
       {
