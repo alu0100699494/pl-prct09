@@ -5,7 +5,9 @@ $(document).ready(function() {
 	  var source = editor.getValue();
 	  
       var result = pl0.parse(source);
-      $('#output').html(JSON.stringify(result,undefined,2));
+	  var transformed_tree = transformacion_pl0(result);
+	  
+      $('#output').html(JSON.stringify(transformed_tree,undefined,2));
     } catch (e) {
       $('#output').html('<div class="bg-darkRed fg-white"><pre>\n' + String(e) + '\n</pre></div>');
     }
