@@ -228,7 +228,7 @@ statement
           $$ = {type: $2, left: {id: $1, declared_in: symbolTables[s].name }, right: $3};
         }
         else if (info && info.type === "PARAM") { //Parametro 
-          $$ = {type: $2, left: {id: $1, declared_in: symbolTables[s].name }, right: $3, declared_in: symbolTables[s].name};
+          $$ = {type: $2, left: {id: $1, declared_in: symbolTables[s].name }, right: $3 /*, declared_in: symbolTables[s].name */}; // ¿?
         }
         else if (info && info.type === "CONST") { 
            throw new Error("Symbol "+$ID+" refers to a constant");

@@ -211,7 +211,7 @@ case 20:
           this.$ = {type: $$[$0-1], left: {id: $$[$0-2], declared_in: symbolTables[s].name }, right: $$[$0]};
         }
         else if (info && info.type === "PARAM") { //Parametro 
-          this.$ = {type: $$[$0-1], left: {id: $$[$0-2], declared_in: symbolTables[s].name }, right: $$[$0], declared_in: symbolTables[s].name};
+          this.$ = {type: $$[$0-1], left: {id: $$[$0-2], declared_in: symbolTables[s].name }, right: $$[$0] /*, declared_in: symbolTables[s].name */}; // ¿?
         }
         else if (info && info.type === "CONST") { 
            throw new Error("Symbol "+$$[$0-2]+" refers to a constant");

@@ -1,18 +1,30 @@
 function transformacion_pl0(arbol)
 {
+  var tabla_simbolos = [];
+
+  function buscar_constante(id)
+  {
+    var valor = null;
+    
+    // iterar sobre la tabla de símbolos
+    
+    // Stringificar
+    return valor;
+  }
+
   function buscar_valores_hijos(nodo)
   {
     var left = null;
     var right = null;
     
-    if(typeof nodo.left == "object" && nodo.left.type && nodo.left.type == "CONST")        // Buscar constante
-      left = nodo.left.value;
-    else if(typeof nodo.left != "object")                                                 // Buscar numero
+    if(typeof nodo.left == "object" && nodo.left.id)       // Buscar constante
+      left = buscar_constante(nodo.left.id);
+    else if(typeof nodo.left != "object")                  // Buscar numero
       left = nodo.left;
       
-    if(typeof nodo.right == "object" && nodo.right.type && nodo.right.type == "CONST")     // Buscar constante
-      right = nodo.right.value;
-    else if(typeof nodo.right != "object")                                                 // Buscar numero
+    if(typeof nodo.right == "object" && nodo.right.id)     // Buscar constante
+      right = buscar_constante(nodo.right.id);
+    else if(typeof nodo.right != "object")                 // Buscar numero
       right = nodo.right;
   
     return [left, right];
@@ -30,6 +42,27 @@ function transformacion_pl0(arbol)
       {
         delete nodo;
         padre[nombre] = parseFloat(left) + parseFloat(right);
+      }
+    }
+  }
+  
+  function transfomacion_UMINUS(nombre, nodo, padre)
+  {
+    if(nodo.type && nodo.type == "-" && nodo.value)
+    {
+      var value = null;
+      
+      // Constante
+      if(nodo.value.id)
+        value = buscar_constante(nodo.value.id);
+      // Valor numérico
+      else
+        value = nodo.value
+        
+      if(value)
+      {
+        delete nodo;
+        padre[nombre] = - parseFloat(value);
       }
     }
   }
@@ -82,7 +115,7 @@ function transformacion_pl0(arbol)
     }
   }
 
-  var transformaciones_arbol = [transformacion_PLUS, transformacion_MINUS,transformacion_TIMES, transformacion_DIV];
+  var transformaciones_arbol = [transformacion_PLUS, transformacion_MINUS, transfomacion_UMINUS, transformacion_TIMES, transformacion_DIV];
 
   function constant_folding(nombre, nodo, padre) {
     // Ejecutar transformaciones árbol
@@ -92,6 +125,16 @@ function transformacion_pl0(arbol)
   }
 
   function recorrer(arbol) {
+    // Si tiene tabla de símbolos, añadir a la pila de tabla de símbolos
+    if(arbol.symboltable && arbol.type && arbol.type == "PROCEDURE")
+    {
+      var nombre = arbol.id;
+        
+      // Añadir tabla a la pila de tablas
+      tabla_simbolos.push( {nombre: nombre, tabla: arbol.symboltable} );
+    }
+    
+    // Recorrer el árbol
     if( typeof arbol == "object" ) {
       $.each(arbol, function(k,v) {
         recorrer(v);
@@ -99,6 +142,10 @@ function transformacion_pl0(arbol)
         constant_folding(k, v, arbol); // Clave, subarbol y padre
       });
     }
+    
+    // Eliminar la última tabla de símbolos (salida de recursion), siempre que no sea la global
+    if(arbol.symboltable && arbol.type && arbol.type == "PROCEDURE" && tabla_simbolos[tabla_simbolos.length - 1] != "Global")
+      tabla_simbolos.pop();
   }
 
   function clone(obj) {
@@ -111,7 +158,10 @@ function transformacion_pl0(arbol)
   }
 
   // Enviar resultado
-  var resultado = clone(arbol);
+  var resultado = clone( arbol );
+  // Añadimos la tabla global aquí
+  tabla_simbolos.push( { nombre: "Global", tabla: resultado[0].symboltable } );
+  
   recorrer(resultado);
   
   return resultado;
