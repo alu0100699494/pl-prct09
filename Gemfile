@@ -11,10 +11,6 @@ gem 'omniauth-google-oauth2'
 gem 'omniauth-facebook'
 gem 'sass'
 
-group :development do
-  gem 'dm-sqlite-adapter'
-  gem 'do_sqlite3'
-end
 
 group :production do
   gem 'pg'
