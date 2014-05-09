@@ -2,11 +2,34 @@ function transformacion_pl0(arbol)
 {
   var tabla_simbolos = [];
 
-  function buscar_constante(id)
+  function buscar_constante(id, declared_in)
   {
     var valor = null;
+    var encontrado = false;
     
-    // iterar sobre la tabla de símbolos
+    // Iterar sobre el vector de la tabla de símbolos
+    $.each(tabla_simbolos.reverse(), function(index,v) {
+       if(v.nombre == declared_in) // Estamos en la tabla de simbolos!
+       {
+          // Buscar en la tabla de símbolos actual
+          $.each(v.tabla, function(j, symbol) {
+            if(symbol.id == id && symbol.type == "CONST")
+            {
+              encontrado = true;
+              valor = "" + symbol.value;
+              return false;
+            }
+            else if(symbol.id == id)
+            {
+              encontrado = true;
+              return false;
+            }
+          });
+          
+          if(encontrado)
+            return false;
+       }
+    });
     
     // Stringificar
     return valor;
@@ -18,12 +41,12 @@ function transformacion_pl0(arbol)
     var right = null;
     
     if(typeof nodo.left == "object" && nodo.left.id)       // Buscar constante
-      left = buscar_constante(nodo.left.id);
+      left = buscar_constante(nodo.left.id, nodo.left.declared_in);
     else if(typeof nodo.left != "object")                  // Buscar numero
       left = nodo.left;
       
     if(typeof nodo.right == "object" && nodo.right.id)     // Buscar constante
-      right = buscar_constante(nodo.right.id);
+      right = buscar_constante(nodo.right.id, nodo.right.declared_in);
     else if(typeof nodo.right != "object")                 // Buscar numero
       right = nodo.right;
   
@@ -54,7 +77,7 @@ function transformacion_pl0(arbol)
       
       // Constante
       if(nodo.value.id)
-        value = buscar_constante(nodo.value.id);
+        value = buscar_constante(nodo.value.id, nodo.left.declared_in);
       // Valor numérico
       else
         value = nodo.value
